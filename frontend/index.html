@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGC Admission Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2A4A;
+    --ink-deep:#101B33;
+    --gold:#C9A227;
+    --gold-soft:#E8D48A;
+    --paper:#FAF7F0;
+    --bot-bubble:#EFEBE0;
+    --charcoal:#2B2B2B;
+    --muted:#6B7280;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    background:transparent;
+  }
+
+  /* ---- Launcher button ---- */
+  #agc-launcher{
+    position:fixed;
+    bottom:24px;
+    right:24px;
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    box-shadow:0 8px 24px rgba(16,27,51,0.35);
+    transition:transform .2s ease;
+    z-index:9999;
+  }
+  #agc-launcher:hover{transform:scale(1.06);}
+  #agc-launcher svg{width:26px;height:26px;}
+
+  /* ---- Chat panel ---- */
+  #agc-panel{
+    position:fixed;
+    bottom:96px;
+    right:24px;
+    width:360px;
+    max-width:92vw;
+    height:520px;
+    max-height:75vh;
+    background:var(--paper);
+    border-radius:var(--radius);
+    box-shadow:0 20px 60px rgba(16,27,51,0.28);
+    display:none;
+    flex-direction:column;
+    overflow:hidden;
+    z-index:9999;
+    border:1px solid #E4DFCF;
+  }
+  #agc-panel.open{display:flex;}
+
+  #agc-header{
+    background:linear-gradient(135deg,var(--ink) 0%,var(--ink-deep) 100%);
+    color:#fff;
+    padding:18px 20px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    position:relative;
+  }
+  #agc-header .crest{
+    width:34px;height:34px;border-radius:50%;
+    background:var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  #agc-header .crest svg{width:18px;height:18px;}
+  #agc-header .titles{line-height:1.25;}
+  #agc-header .titles .name{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:15.5px;
+    letter-spacing:.2px;
+  }
+  #agc-header .titles .status{
+    font-size:11.5px;
+    color:var(--gold-soft);
+    display:flex;align-items:center;gap:5px;
+  }
+  #agc-header .status .dot{
+    width:6px;height:6px;border-radius:50%;
+    background:#4ADE80;
+    display:inline-block;
+  }
+  #agc-close{
+    margin-left:auto;
+    background:none;border:none;color:#fff;
+    opacity:.7;cursor:pointer;font-size:20px;line-height:1;
+    padding:4px;
+  }
+  #agc-close:hover{opacity:1;}
+
+  #agc-messages{
+    flex:1;
+    overflow-y:auto;
+    padding:18px 16px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .msg{
+    max-width:82%;
+    padding:10px 13px;
+    border-radius:14px;
+    font-size:13.5px;
+    line-height:1.45;
+    white-space:pre-wrap;
+  }
+  .msg.bot{
+    background:var(--bot-bubble);
+    color:var(--charcoal);
+    align-self:flex-start;
+    border-bottom-left-radius:4px;
+  }
+  .msg.user{
+    background:var(--ink);
+    color:#fff;
+    align-self:flex-end;
+    border-bottom-right-radius:4px;
+  }
+  .msg.typing{
+    display:flex;gap:4px;align-items:center;
+    background:var(--bot-bubble);
+    align-self:flex-start;
+    border-bottom-left-radius:4px;
+  }
+  .msg.typing span{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--muted);
+    animation:bounce 1.2s infinite ease-in-out;
+  }
+  .msg.typing span:nth-child(2){animation-delay:.15s;}
+  .msg.typing span:nth-child(3){animation-delay:.3s;}
+  @keyframes bounce{
+    0%,60%,100%{transform:translateY(0);opacity:.5;}
+    30%{transform:translateY(-4px);opacity:1;}
+  }
+
+  #agc-inputrow{
+    display:flex;
+    gap:8px;
+    padding:12px;
+    border-top:1px solid #E4DFCF;
+    background:#fff;
+  }
+  #agc-input{
+    flex:1;
+    border:1px solid #DCD6C4;
+    border-radius:22px;
+    padding:10px 16px;
+    font-family:'Inter',sans-serif;
+    font-size:13.5px;
+    outline:none;
+    background:var(--paper);
+  }
+  #agc-input:focus{border-color:var(--gold);}
+  #agc-send{
+    width:40px;height:40px;
+    border-radius:50%;
+    border:none;
+    background:var(--gold);
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    transition:transform .15s ease;
+  }
+  #agc-send:hover{transform:scale(1.05);}
+  #agc-send svg{width:16px;height:16px;}
+
+  @media (prefers-reduced-motion: reduce){
+    #agc-launcher, #agc-send, .msg.typing span{transition:none;animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<div id="agc-launcher" title="Chat with AGC Admission Assistant">
+  <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+  </svg>
+</div>
+
+<div id="agc-panel">
+  <div id="agc-header">
+    <div class="crest">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#1B2A4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 10 12 5 2 10l10 5 10-5Z"></path>
+        <path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"></path>
+      </svg>
+    </div>
+    <div class="titles">
+      <div class="name">AGC Admission Assistant</div>
+      <div class="status"><span class="dot"></span> Online now</div>
+    </div>
+    <button id="agc-close" aria-label="Close chat">&times;</button>
+  </div>
+
+  <div id="agc-messages"></div>
+
+  <div id="agc-inputrow">
+    <input id="agc-input" type="text" placeholder="Ask about fees, courses, deadlines..." autocomplete="off">
+    <button id="agc-send" aria-label="Send message">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#1B2A4A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m22 2-7 20-4-9-9-4Z"></path>
+        <path d="M22 2 11 13"></path>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  // Point this at your running backend (see backend/main.py)
+  const API_URL = "http://localhost:8000/chat";
+
+  const launcher = document.getElementById('agc-launcher');
+  const panel = document.getElementById('agc-panel');
+  const closeBtn = document.getElementById('agc-close');
+  const messagesEl = document.getElementById('agc-messages');
+  const input = document.getElementById('agc-input');
+  const sendBtn = document.getElementById('agc-send');
+
+  const sessionId = 'session-' + Math.random().toString(36).slice(2) + Date.now();
+  let opened = false;
+
+  launcher.addEventListener('click', () => {
+    panel.classList.add('open');
+    if (!opened) {
+      addMessage("Hi! I'm the AGC Admission Assistant. Before we start, what's your name?", 'bot');
+      opened = true;
+    }
+    input.focus();
+  });
+
+  closeBtn.addEventListener('click', () => panel.classList.remove('open'));
+
+  function addMessage(text, who) {
+    const div = document.createElement('div');
+    div.className = 'msg ' + who;
+    div.textContent = text;
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    return div;
+  }
+
+  function showTyping() {
+    const div = document.createElement('div');
+    div.className = 'msg typing';
+    div.innerHTML = '<span></span><span></span><span></span>';
+    messagesEl.appendChild(div);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    return div;
+  }
+
+  async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+    addMessage(text, 'user');
+    input.value = '';
+    const typingEl = showTyping();
+
+    try {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: sessionId, message: text })
+      });
+      if (!res.ok) throw new Error('Server error');
+      const data = await res.json();
+      typingEl.remove();
+      addMessage(data.reply, 'bot');
+    } catch (err) {
+      typingEl.remove();
+      addMessage("Sorry, I couldn't reach the admission assistant right now. Please try again or contact the admission office directly.", 'bot');
+    }
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+</script>
+
+</body>
+</html>

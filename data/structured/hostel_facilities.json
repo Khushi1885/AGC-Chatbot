@@ -1,0 +1,22 @@
+{
+  "hostel": {
+    "available": true,
+    "boys_hostel_capacity": 500,
+    "girls_hostel_capacity": 400,
+    "room_types": [
+      {"type": "Double sharing", "fee_per_year": 60000},
+      {"type": "Triple sharing", "fee_per_year": 45000}
+    ],
+    "rules": "No outside guests after 9 PM, ID card mandatory for entry, mess timings 7-9 AM / 12-2 PM / 7-9 PM",
+    "amenities": ["Wi-Fi", "Laundry", "24/7 security", "Common room with TV"]
+  },
+  "campus_facilities": [
+    "Central library with 50,000+ books",
+    "Computer labs with 24/7 access",
+    "Sports complex (cricket, football, basketball, indoor games)",
+    "On-campus medical center",
+    "Cafeteria and food court",
+    "Bus transport from major city points",
+    "Auditorium and seminar halls"
+  ]
+}

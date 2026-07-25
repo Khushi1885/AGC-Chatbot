@@ -1,0 +1,178 @@
+{
+  "overview": {
+    "authority": "IKGPTU (Inder Kumar Gujral Punjab Technical University), Jalandhar",
+    "applies_to": "Centralized Online Counselling for admission to Affiliated/Autonomous Colleges of IKGPTU and MRSPTU Bathinda",
+    "session": "2025-26",
+    "selection_basis": "Inter-se-merit of qualifying examination result",
+    "official_website": "https://www.ptu.ac.in",
+    "registration_url": "https://counselling.ptu.ac.in/Registration/",
+    "admission_brochure_url": "https://ptu.ac.in/admission-2025-26/admission-brochure-pamphlet/"
+  },
+
+  "courses_covered": [
+    {"name": "B.Tech & B.Tech Fee Waiver (1st year)", "universities": ["IKGPTU", "MRSPTU"]},
+    {"name": "B.Tech & B.Tech Fee Waiver (2nd Year, Lateral Entry)", "universities": ["IKGPTU", "MRSPTU"]},
+    {"name": "B.Pharmacy & B.Pharmacy Fee Waiver (1st year)", "universities": ["IKGPTU", "MRSPTU"]},
+    {"name": "B.Pharmacy Lateral Entry", "universities": ["IKGPTU"]},
+    {"name": "B.Architecture", "universities": ["IKGPTU"]},
+    {"name": "BHMCT (AICTE)", "universities": ["IKGPTU"]},
+    {"name": "Pharm.D", "universities": ["IKGPTU", "MRSPTU"]},
+    {"name": "BBA", "universities": ["IKGPTU", "MRSPTU"]},
+    {"name": "BCA", "universities": ["IKGPTU", "MRSPTU"]},
+    {"name": "M.Tech (Full Time)", "universities": ["IKGPTU", "MRSPTU"]},
+    {"name": "M.Pharmacy", "universities": ["IKGPTU"]},
+    {"name": "MBA", "universities": ["IKGPTU", "MRSPTU"]},
+    {"name": "MCA", "universities": ["IKGPTU", "MRSPTU"]},
+    {"name": "Pharm.D Post Baccalaureate", "universities": ["IKGPTU"]}
+  ],
+
+  "process_flow": [
+    "Registration",
+    "Filling of Profile Details",
+    "Filling of Contact Details",
+    "Filling of Reservation & Other Details",
+    "Filling of Qualification Details",
+    "Uploading of Documents",
+    "Submission of Counselling Fee",
+    "Choice Filling"
+  ],
+
+  "registration_steps": [
+    "Go to the counselling registration URL and click APPLY FOR NEW REGISTRATION",
+    "Read the important instructions and click I Agree to open the Registration Form",
+    "Fill required details based on selected State of Eligibility and Course",
+    "Fill Profile details as per 10th certificate, then click Get OTP; OTP sent to registered mobile and email; enter OTP and click Verify OTP",
+    "After registration, log in using Reference No. and Password sent via email",
+    "Fill Contact Details and click Save & Next",
+    "Fill Reservation and Other Details and click Save & Next",
+    "Fill Qualification Details as per certificates and click Save & Next",
+    "Review the complete Application Form; if correct, tick checkbox and click Save & Final Submit to lock details",
+    "Upload required documents one by one from the dropdown list",
+    "Tick checkbox and click Pay Counselling Fee; complete payment",
+    "After payment confirmation, proceed to Fill & Save Choices in preference order (at least 1 choice required), then Lock Choices",
+    "Candidates opting for Tuition Fee Waiver (TFW) should place TFW-suffixed course choices at the top of their preference order",
+    "Merit list and rank prepared based on application details; Provisional Seat Allotment Letter issued based on rank and preferences",
+    "Print the provisional allotment letter and report to the allotted institute with required documents and applicable semester fee to confirm the seat",
+    "Confirmed seat can be withdrawn using the Withdraw/Surrender Seat option"
+  ],
+
+  "application_form_instructions": {
+    "prefilled_fields": "Name, Father Name, Mother Name, DOB & Gender are prefilled from the Registration Form",
+    "state_of_eligibility": "Candidate selects either Punjab State (85% Quota) or Other State (15% Quota); further options depend on this selection",
+    "category": "13 category types for Punjab State (85% Quota) candidates, 3 category types for Other State (15% Quota) candidates. Relevant certificate required if a reserved category is selected."
+  },
+
+  "tuition_fee_waiver_scheme": {
+    "eligibility": "Punjab State residents whose parents' annual family income (all sources) is less than Rs. 8 lakhs for the current financial year",
+    "applicable_courses": ["B.Tech (1st Year & Lateral Entry)", "B.Pharmacy (1st Year & Lateral Entry)", "BCA"],
+    "documents_required_at_admission": ["Income Certificate (current year, issued by Govt. of Punjab / Suvidha Kendra)", "Punjab Residence Certificate"],
+    "seat_availability": "Very limited - 5% of intake, subject to availability and merit",
+    "rules": [
+      "SC/ST students eligible for Post Matric Scholarship Scheme are advised NOT to opt for TFW, since availing a TFW seat disqualifies them from Post Matric Scholarship",
+      "Students admitted under TFW cannot change institution or course under any circumstances",
+      "TFW applies for the complete duration of the course",
+      "TFW students are not entitled to any other government financial assistance scheme, but remain eligible for merit/competition-based scholarships",
+      "TFW covers only the tuition fee prescribed by the State Government; all other fees must be paid by the student",
+      "Students confirmed under TFW in round 1 can participate in round 2 counselling only for normal (non-TFW) seats"
+    ]
+  },
+
+  "counselling_fee": {
+    "amount_inr": 2000,
+    "refundable": false,
+    "notes": [
+      "Rs. 2,000 required per course; applying for two separate courses (e.g. B.Arch and B.Tech) requires paying Rs. 2,000 for each, totaling Rs. 4,000",
+      "If fee is paid in round 1, it is not required again to participate in round 2",
+      "Applicable to both 85% quota and 15% quota candidates, regardless of category",
+      "Only candidates who have paid the counselling fee can fill choices",
+      "Fee once paid is neither refunded nor transferable to another course"
+    ]
+  },
+
+  "documents_required_by_course": [
+    {"course": "Common for all courses", "documents": ["10th DMC", "Residential Certificate (Domicile or valid Address Proof)", "Reserved Category Certificate (if applicable)", "Passport size photograph"]},
+    {"course": "B.Tech 1st year", "documents": ["Migration Certificate of qualifying exam (if applicable)", "Income Certificate (if applicable)", "DMCs of 10+2/Diploma"]},
+    {"course": "B.Tech 2nd year (Lateral Entry)", "documents": ["DMCs of Diploma/B.Sc.", "DMC of 10+2 if Diploma in Lateral Entry"]},
+    {"course": "B.Pharmacy 1st year", "documents": ["DMCs of 10+2/Diploma"]},
+    {"course": "B.Pharmacy 2nd year (Lateral Entry)", "documents": ["DMCs of Diploma in Pharmacy", "DMC of 10+2"]},
+    {"course": "B.Architecture", "documents": ["NATA Score Card", "DMCs of 10+2/Diploma"]},
+    {"course": "BHMCT/BBA/BCA", "documents": ["DMC of 10+2"]},
+    {"course": "MBA/MCA", "documents": ["DMCs of Graduation"]},
+    {"course": "M.Tech", "documents": ["DMCs of B.Tech course", "DMCs of Diploma (if Graduation done under Lateral Entry)"]},
+    {"course": "M.Pharmacy", "documents": ["DMCs of B.Pharmacy"]}
+  ],
+
+  "choice_filling": {
+    "description": "After rank is assigned, candidates see available choices based on category and filled credentials. Choices can be selected, reordered (up/down or swap), deleted, and must be locked at the end.",
+    "auto_lock": "Unlocked saved choices are automatically locked at the closing time of the Choice Filling window."
+  },
+
+  "result_and_reporting": {
+    "result_declaration": "Candidates check results via their login account; provisional allotment letter is issued and candidates are also notified by SMS. Allotment is purely provisional until confirmed by the allotted institute.",
+    "reporting_requirements": "Candidate must submit the Provisional Allotment Letter with original documents and pay the applicable semester fee at the allotted institute within the prescribed period to confirm the seat. Mismatched or tampered documents lead to rejection of the allotted seat.",
+    "seat_withdrawal": "Confirmed seat can be withdrawn during the reporting period of each round, or within 7 days from the last date of reporting of the last counselling round."
+  },
+
+  "second_round_participation": {
+    "eligibility": "Candidates from both 85% Punjab quota and 15% Other State quota can participate in round 2, regardless of whether they got a seat in round 1, using the same counselling fee already paid (no need to pay again)",
+    "rules": [
+      "If a new seat is allotted in round 2, the previous provisional admission is automatically cancelled with no right to claim it",
+      "If no new seat is allotted in round 2, the seat confirmed in round 1 is retained",
+      "Candidates confirmed under TFW in round 1 can participate in round 2 only for normal (non-TFW) seats; TFW seats are not shown to them in round 2"
+    ]
+  },
+
+  "schedules": {
+    "undergraduate_programmes": {
+      "applies_to": ["B.Tech 1st Year", "B.Pharm 1st Year", "Pharm.D", "B.Arch", "BHMCT"],
+      "round_1": {
+        "registration_and_fee_payment": {"start": "2025-06-17 11:00 AM", "end": "2025-06-23 05:00 PM"},
+        "choice_filling": {"start": "2025-06-26 11:00 AM", "end": "2025-06-28 11:00 AM"},
+        "result_declaration": "2025-07-02 09:00 AM",
+        "reporting_at_institution": {"start": "2025-07-02 09:00 AM", "end": "2025-07-05 06:00 PM"}
+      },
+      "round_2": {
+        "registration_and_fee_payment": {"start": "2025-07-07 11:00 AM", "end": "2025-07-08 05:00 PM"},
+        "rank_preparation": "2025-07-12",
+        "choice_filling": {"start": "2025-07-11 11:00 AM", "end": "2025-07-15 05:00 PM"},
+        "result_declaration": "2025-07-16 09:00 AM",
+        "reporting_at_institution": {"start": "2025-07-16 09:00 AM", "end": "2025-07-19 06:00 PM"}
+      },
+      "tfw_note": "Available only under B.Tech and B.Pharmacy for Punjab residents with annual family income below Rs. 8 lakhs"
+    },
+    "pg_and_other_programmes": {
+      "applies_to": ["BBA", "BCA", "MBA", "MCA", "M.Tech", "M.Pharm", "Pharm.D (PB)"],
+      "round_1": {
+        "registration_fee_and_choice_filling": {"start": "2025-07-21 11:00 AM", "end": "2025-07-22 05:00 PM"},
+        "result_declaration": "2025-07-25 05:00 PM",
+        "reporting_at_institution": {"start": "2025-07-26 09:00 AM", "end": "2025-07-29 06:00 PM"}
+      },
+      "round_2": {
+        "registration_fee_and_choice_filling": {"start": "2025-07-31 11:00 AM", "end": "2025-08-01 05:00 PM"},
+        "result_declaration": "2025-08-05 05:00 PM",
+        "reporting_at_institution": {"start": "2025-08-06 09:00 AM", "end": "2025-08-08 06:00 PM"}
+      },
+      "tfw_note": "Available only under BCA for Punjab residents with annual family income below Rs. 8 lakhs"
+    },
+    "lateral_entry_programmes": {
+      "applies_to": ["B.Tech Lateral Entry", "B.Pharmacy Lateral Entry"],
+      "round_1": {
+        "registration_fee_and_choice_filling": {"start": "2025-08-06 11:00 AM", "end": "2025-08-06 06:00 PM"},
+        "result_declaration": "2025-08-07 07:00 PM",
+        "reporting_at_institution": {"start": "2025-08-08 09:00 AM", "end": "2025-08-08 06:00 PM"}
+      },
+      "round_2": {
+        "registration_fee_and_choice_filling": {"start": "2025-08-10 11:00 AM", "end": "2025-08-10 06:00 PM"},
+        "result_declaration": "2025-08-11 07:00 PM",
+        "reporting_at_institution": {"start": "2025-08-12 09:00 AM", "end": "2025-08-12 06:00 PM"}
+      },
+      "special_note": "1st round of B.Pharmacy Lateral Entry counselling is for Punjab candidates only; vacant seats in round 2 go to Other State candidates. For other lateral entry programmes, Punjab (85%) and Other State (15%) quota counselling happens simultaneously."
+    }
+  },
+
+  "general_notes": [
+    "Post-Matric Scholarship (PMS) Scheme is available as per Punjab Government norms",
+    "Candidates must carry all relevant original documents at time of reporting, or the provisionally allotted seat will be cancelled with no right to claim it again",
+    "After 2 rounds of centralized counselling, remaining admissions are made at Campus/College level"
+  ]
+}

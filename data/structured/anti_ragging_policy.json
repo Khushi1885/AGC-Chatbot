@@ -1,0 +1,35 @@
+{
+  "anti_ragging_policy": {
+    "statement": "Ragging is a criminal offence. Culprits will attract punitive action as mentioned in UGC Regulations.",
+    "regulation_reference_url": "https://www.antiragging.in/assets/pdf/annexure/Annexure-I.pdf",
+    "programme_name": "National Ragging Prevention Programme"
+  },
+  "helplines": [
+    {
+      "name": "National Anti-Ragging Helpline",
+      "availability": "24x7 Toll-Free",
+      "phone": "1800-180-5522",
+      "email": "helpine@antiragging.in",
+      "website": "https://www.antiragging.in"
+    },
+    {
+      "name": "UGC Monitoring Agency - Centre for Youth (C4Y)",
+      "email": "antiragging@c4yindia.org",
+      "website": "https://www.c4yindia.org"
+    }
+  ],
+  "college_committees": {
+    "anti_ragging_committee": {
+      "abbreviation": "ARC",
+      "note": "Contact details to be added from college notice board / website"
+    },
+    "anti_ragging_squad": {
+      "abbreviation": "ARS",
+      "note": "Contact details to be added from college notice board / website"
+    }
+  },
+  "regulatory_body": {
+    "name": "University Grants Commission (UGC)",
+    "website": "https://www.ugc.ac.in"
+  }
+}

@@ -1,0 +1,20 @@
+# Environment secrets - NEVER commit this
+.env
+
+# Python
+venv/
+backend/venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Local database (if still using SQLite anywhere)
+*.db
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/

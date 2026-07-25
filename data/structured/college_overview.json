@@ -1,0 +1,71 @@
+{
+  "college_overview": {
+    "name": "Amritsar Group of Colleges (AGC)",
+    "description": "A world-class educational environment welcoming national and international students seeking quality education in India. Enlisted among the Best Engineering Colleges of North India.",
+    "accreditations": [
+      "Grade 'A' accreditation by the National Board of Accreditation (NBA)",
+      "Grade 'A' accreditation by the National Assessment & Accreditation Council (NAAC)"
+    ],
+    "constituent_institutes": [
+      {
+        "name": "Amritsar College of Engineering & Technology (ACET)",
+        "affiliated_to": "Inder Kumar Gujral Punjab Technical University (IKG PTU), Kapurthala",
+        "applies_to": "Engineering and management courses"
+      },
+      {
+        "name": "Amritsar Pharmacy College (APC)",
+        "affiliated_to": "IKGPTU and PSBTE & IT",
+        "applies_to": "Pharmacy courses"
+      },
+      {
+        "name": "Law Programs (BA LLB, LLB)",
+        "affiliated_to": "Guru Nanak Dev University (GNDU), Amritsar",
+        "applies_to": "Law courses"
+      }
+    ],
+    "stats": {
+      "alumni": "12,132+",
+      "students": "5478+",
+      "visitors": "130+",
+      "events": "964+"
+    },
+    "agc_nest_scholarship": {
+      "full_name": "AGC NEST - National Entrance Scholarship Test",
+      "description": "AGC has launched intake for 2026 for all courses. Aspirants apply online and can avail a scholarship through AGC NEST.",
+      "max_scholarship_amount_inr": 150000,
+      "note": "Marketed as 'Avail Scholarship Upto 1.5 LACS'",
+      "registration_flow": ["Register", "Verify account", "Pay", "Scholarship exam"],
+      "registration_form_fields": [
+        "Student's Name",
+        "Father's Name",
+        "Email address",
+        "Phone Number",
+        "State",
+        "City",
+        "Course",
+        "School",
+        "Hostel Facility required (Yes/No)",
+        "Category",
+        "Aadhaar Number",
+        "Board",
+        "Reference Name (optional)"
+      ]
+    }
+  },
+  "course_categories": {
+    "filters": ["All", "Engineering", "Law", "Other"],
+    "listed_programs": [
+      "B.Tech",
+      "M.Tech",
+      "Management Studies",
+      "Computer Application",
+      "Hotel Management",
+      "Pharmacy",
+      "Applied Sciences",
+      "Fashion Design",
+      "LLB",
+      "BA LLB"
+    ],
+    "note": "This is the high-level list shown on the website; detailed course data (fees, eligibility, seats) is in courses.json and should be cross-checked/expanded per program."
+  }
+}

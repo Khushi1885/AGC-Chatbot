@@ -1,0 +1,84 @@
+{
+  "primary_contact": {
+    "address": "12 Km Stone, Amritsar-Jalandhar, G.T Road, Amritsar-143001 (PB), India",
+    "phone": ["+91 8872009951 (24/7 Support Line)", "+91 8872009950 (24/7 Support Line)"],
+    "email": "admission@acetedu.in"
+  },
+  "admission_cell_overview": {
+    "department": "Department of Admissions",
+    "institute": "AGC, Amritsar",
+    "description": "Acts as an interface between students and the Institute, guiding them on career options and admission guidelines to secure a seat in their course of choice.",
+    "services": [
+      "Assistance in choosing courses as per educational background",
+      "Academic assessment as per eligibility criteria for particular courses",
+      "Career exploration guidance",
+      "Guidance for students conditionally accepted or on academic/disciplinary probation",
+      "Discussion on various career options for particular course(s)",
+      "Personal counseling to individual students and small groups",
+      "Information on government scholarship schemes",
+      "Sharing fee and document details required to register for a seat",
+      "Conducting informational programs and seminars on admission requirements, policies, and procedures"
+    ]
+  },
+  "admission_officers": [
+    {
+      "name": "Dr. Diptii Malhotra",
+      "designation": "Dean CCIE and Head Digital Cell",
+      "region": "General / Head Office",
+      "phone": ["9501033881", "0183-5069535"],
+      "email": "head.digital@agcedu.in"
+    },
+    {
+      "name": "Mr. Harmandeep Singh",
+      "designation": "Dy. Dean Outstation",
+      "region": "Outstation",
+      "phone": ["7087360174"],
+      "email": "harmandeep.singh@acetedu.in"
+    },
+    {
+      "name": "Mr. Ranjeet Singh",
+      "designation": "Admission Officer",
+      "region": "Himachal Pradesh",
+      "phone": ["08872008179"],
+      "email": "ranjeet.agc@gmail.com"
+    },
+    {
+      "name": "Mr. Rupesh Gupta & Varinder Singh",
+      "designation": "Admission Officer",
+      "region": "Jammu",
+      "phone": ["84379-72400", "78898-81842"],
+      "email": "rupesh.it@acetedu.in, maxxwelladmission@gmail.com"
+    },
+    {
+      "name": "Mr. Maninder Singh & Rupesh Gupta",
+      "designation": "Admission Officer",
+      "region": "Kashmir & Ladakh",
+      "phone": ["9018199595", "8437972400"],
+      "email": "pearlconsultancyjk@gmail.com, rupesh.it@acetedu.in"
+    },
+    {
+      "name": "Mr. Mithlesh",
+      "designation": "Admission Officer",
+      "region": "Bihar",
+      "phone": ["+91 79823 24097"],
+      "email": null
+    },
+    {
+      "name": "Er. Vedant Bhardwaj",
+      "designation": "Admission Officer",
+      "region": "Bihar",
+      "phone": ["+91 97984-28657"],
+      "email": "singhvedant156@gmail.com"
+    }
+  ],
+  "escalation_rules": {
+    "trigger_when": [
+      "Question is about a specific student's application status",
+      "Data is missing or unclear from the structured sources",
+      "Student requests a human counselor",
+      "Query involves a complaint or grievance",
+      "Student's query is region-specific (route to matching regional officer if identifiable)"
+    ],
+    "escalation_message_template": "This needs a closer look from our admission team. Please contact the relevant admission officer for your region, or reach the Admission Cell directly."
+  }
+}

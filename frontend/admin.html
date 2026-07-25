@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGC Admission - Leads Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2A4A;
+    --ink-deep:#101B33;
+    --gold:#C9A227;
+    --paper:#FAF7F0;
+    --charcoal:#2B2B2B;
+    --muted:#6B7280;
+    --border:#E4DFCF;
+    --row-hover:#F4F0E4;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    background:var(--paper);
+    color:var(--charcoal);
+    min-height:100vh;
+  }
+  header{
+    background:linear-gradient(135deg,var(--ink) 0%,var(--ink-deep) 100%);
+    color:#fff;
+    padding:28px 32px;
+  }
+  header h1{
+    font-family:'Fraunces',serif;
+    font-size:22px;
+    margin:0 0 4px 0;
+  }
+  header p{
+    margin:0;
+    color:#C9C4B0;
+    font-size:13px;
+  }
+
+  main{
+    max-width:1000px;
+    margin:0 auto;
+    padding:28px 24px 60px;
+  }
+
+  #gate{
+    max-width:360px;
+    margin:80px auto;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:28px;
+    text-align:center;
+  }
+  #gate h2{
+    font-family:'Fraunces',serif;
+    font-size:18px;
+    margin:0 0 6px;
+  }
+  #gate p{color:var(--muted);font-size:13px;margin:0 0 18px;}
+  #gate input{
+    width:100%;
+    padding:10px 14px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    font-size:14px;
+    margin-bottom:12px;
+    font-family:'Inter',sans-serif;
+  }
+  #gate button, #refresh-btn{
+    background:var(--gold);
+    color:var(--ink-deep);
+    border:none;
+    padding:10px 20px;
+    border-radius:10px;
+    font-weight:600;
+    font-size:13.5px;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+  }
+  #gate-error{color:#B4453E;font-size:12.5px;margin-top:8px;min-height:16px;}
+
+  #dashboard{display:none;}
+
+  .toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:16px;
+  }
+  .toolbar .count{
+    font-size:13.5px;
+    color:var(--muted);
+  }
+  .toolbar .count strong{color:var(--ink);}
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:#fff;
+    border-radius:14px;
+    overflow:hidden;
+    border:1px solid var(--border);
+  }
+  thead tr{background:#F1ECDD;}
+  th{
+    text-align:left;
+    padding:12px 16px;
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    color:var(--muted);
+    font-weight:600;
+  }
+  td{
+    padding:13px 16px;
+    font-size:13.5px;
+    border-top:1px solid var(--border);
+  }
+  tbody tr:hover{background:var(--row-hover);}
+  td.name{font-weight:600;color:var(--ink);}
+  td.mobile a, td.email a{color:var(--ink);text-decoration:none;}
+  td.mobile a:hover, td.email a:hover{color:var(--gold);}
+  td.time{color:var(--muted);font-size:12.5px;}
+
+  #empty-state{
+    text-align:center;
+    padding:60px 20px;
+    color:var(--muted);
+    font-size:14px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AGC Admission Assistant — Leads Dashboard</h1>
+  <p>Students who chatted with the admission bot and left their contact details</p>
+</header>
+
+<main>
+  <div id="gate">
+    <h2>Admin Access</h2>
+    <p>Enter the admin key to view leads</p>
+    <input id="admin-key-input" type="password" placeholder="Admin key">
+    <button id="unlock-btn">Unlock</button>
+    <div id="gate-error"></div>
+  </div>
+
+  <div id="dashboard">
+    <div class="toolbar">
+      <div class="count"><strong id="lead-count">0</strong> leads captured</div>
+      <button id="refresh-btn">Refresh</button>
+    </div>
+    <div id="table-wrap"></div>
+  </div>
+</main>
+
+<script>
+  // Point this at your running backend
+  const API_BASE = "http://localhost:8000";
+
+  let adminKey = "";
+
+  const gate = document.getElementById('gate');
+  const dashboard = document.getElementById('dashboard');
+  const gateError = document.getElementById('gate-error');
+  const keyInput = document.getElementById('admin-key-input');
+  const unlockBtn = document.getElementById('unlock-btn');
+  const refreshBtn = document.getElementById('refresh-btn');
+  const tableWrap = document.getElementById('table-wrap');
+  const leadCount = document.getElementById('lead-count');
+
+  async function fetchLeads() {
+    try {
+      const res = await fetch(`${API_BASE}/admin/leads`, {
+        headers: { 'x-admin-key': adminKey }
+      });
+      if (res.status === 401) {
+        gateError.textContent = "Invalid admin key.";
+        return null;
+      }
+      if (!res.ok) throw new Error('Server error');
+      const data = await res.json();
+      return data.leads;
+    } catch (err) {
+      gateError.textContent = "Couldn't reach the backend. Is it running?";
+      return null;
+    }
+  }
+
+  function renderLeads(leads) {
+    leadCount.textContent = leads.length;
+    if (leads.length === 0) {
+      tableWrap.innerHTML = '<div id="empty-state">No leads yet — once a student completes the chatbot intro, they\'ll show up here.</div>';
+      return;
+    }
+    const rows = leads.map(lead => `
+      <tr>
+        <td class="name">${escapeHtml(lead.name || '-')}</td>
+        <td class="mobile"><a href="tel:${lead.mobile}">${escapeHtml(lead.mobile || '-')}</a></td>
+        <td class="email"><a href="mailto:${lead.email}">${escapeHtml(lead.email || '-')}</a></td>
+        <td class="time">${formatDate(lead.created_at)}</td>
+      </tr>
+    `).join('');
+
+    tableWrap.innerHTML = `
+      <table>
+        <thead>
+          <tr><th>Name</th><th>Mobile</th><th>Email</th><th>Captured At</th></tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function formatDate(iso) {
+    if (!iso) return '-';
+    const d = new Date(iso);
+    return d.toLocaleString();
+  }
+
+  async function unlock() {
+    adminKey = keyInput.value.trim();
+    gateError.textContent = "";
+    if (!adminKey) {
+      gateError.textContent = "Please enter the admin key.";
+      return;
+    }
+    const leads = await fetchLeads();
+    if (leads !== null) {
+      gate.style.display = 'none';
+      dashboard.style.display = 'block';
+      renderLeads(leads);
+    }
+  }
+
+  unlockBtn.addEventListener('click', unlock);
+  keyInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') unlock(); });
+
+  refreshBtn.addEventListener('click', async () => {
+    const leads = await fetchLeads();
+    if (leads !== null) renderLeads(leads);
+  });
+</script>
+
+</body>
+</html>

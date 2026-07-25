@@ -1,0 +1,42 @@
+{
+  "student_grievance_redressal": {
+    "system_name": "Online Student Grievance Redressal Committee",
+    "objectives": [
+      "Ensure an environment where all students feel safe and secure",
+      "Provide prompt counselling for emotional emergencies arising from any campus event",
+      "Provide a mechanism to redress student grievances"
+    ],
+    "committee_members": [
+      {"name": "Dr. Gaurav Tejpal", "role": "Chairman", "designation": "Principal"},
+      {"name": "Mr. Amit Singh", "role": "Member", "designation": "Dean Student Affairs"},
+      {"name": "Mr. Rakesh Jaitly", "role": "Member", "designation": "Deputy Registrar"},
+      {"name": "Ms. Pooja Puri", "role": "Member", "designation": "HOD MBA"},
+      {"name": "Mr. Rana Kishore Singh", "role": "Member", "designation": "Student"}
+    ]
+  },
+
+  "women_grievance_redressal_committee": {
+    "also_known_as": "Grievance Redressal Committee for Women cum Anti Sexual Harassment",
+    "purpose": "Offers suggestions to management on matters connected with women's welfare (transport, canteen facilities, and other issues); handles complaints/grievances of teaching and non-teaching female staff.",
+    "functions": [
+      "Address problems and complaints of female staff and redress grievances as early as possible",
+      "Keep the Principal and management informed from time to time about grievances raised by female staff"
+    ],
+    "note": "Committee members meet as and when the need arises and forward recommendations to the Principal and management for further action.",
+    "members": [
+      {"sr_no": 1, "name": "Ms. Pooja Puri", "department": "MBA", "designation": "HOD", "contact": "9417880947", "position": "Chairperson"},
+      {"sr_no": 2, "name": "Ms. Namrata Kad", "department": "EE", "designation": "HOD", "contact": "9463541369", "position": "Convener"},
+      {"sr_no": 3, "name": "Ms. Tejinder Sharma", "department": "CSE", "designation": "Associate Prof.", "contact": "9878717667", "position": "Member"},
+      {"sr_no": 4, "name": "Ms. Arjinder Kaur", "department": "MBA", "designation": "Associate Prof.", "contact": "9915777047", "position": "Member"},
+      {"sr_no": 5, "name": "Ms. Shikha", "department": "DCA", "designation": "Assistant Prof.", "contact": "8264195001", "position": "Member"},
+      {"sr_no": 6, "name": "Ms. Sheetu Wadhwa", "department": "Applied Science", "designation": "Assistant Prof.", "contact": "8054734600", "position": "Member"},
+      {"sr_no": 7, "name": "Ms. Kulbir Kaur", "department": "Applied Sciences", "designation": "Assistant Prof.", "contact": "7009985026", "position": "Member"},
+      {"sr_no": 8, "name": "Ms. Baljeet Kaur", "department": "Applied Sciences", "designation": "Assistant Prof.", "contact": "9501404929", "position": "Member"},
+      {"sr_no": 9, "name": "Ms. Yadwinder Kaur", "department": "HMCT", "designation": "Assistant Prof.", "contact": "7973110213", "position": "Member"}
+    ]
+  },
+
+  "complaint_form_fields": ["Name", "Email", "Phone Number", "Branch", "Message"],
+
+  "escalation_note": "For grievance or harassment-related queries, the agent should always direct students to the relevant committee/chairperson contact above rather than attempting to resolve or advise on the complaint itself."
+}

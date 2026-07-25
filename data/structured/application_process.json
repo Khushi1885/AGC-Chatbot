@@ -1,0 +1,216 @@
+{
+  "general_admission_procedure": {
+    "description": "Multi-step process combining merit in qualifying exams, national-level entrance test scores, and/or the college's own scholarship-based entrance exam (AGC NEST).",
+    "steps": [
+      {
+        "step": 1,
+        "title": "Check Eligibility & Entrance Exam Requirements",
+        "details": [
+          "Minimum marks required in last qualifying exam (e.g. 50%) - 10+2 for UG, Graduation for PG",
+          "Specific subject combination required depending on course (e.g. Physics, Chemistry, Maths for B.Tech)",
+          "Accepted entrance exams by course: B.Tech - JEE Main, CUET, or AGC NEST; MBA - CMAT or AGC NEST; other UG courses - AGC NEST",
+          "For B.Voc, D.Pharmacy, PG courses and lateral entry (LEET), admission is often based solely on qualifying exam marks with no separate entrance exam, but online registration is mandatory"
+        ]
+      },
+      {
+        "step": 2,
+        "title": "Application / Registration",
+        "details": [
+          "Conducted online through the official AGC admissions portal",
+          "Candidate registers and fills personal details, academic information, and program choice",
+          "If applying through AGC NEST, candidate pays a registration fee of approximately Rs. 500 and selects a test slot"
+        ]
+      },
+      {
+        "step": 3,
+        "title": "Appear for Entrance Exam (if applicable)",
+        "details": [
+          "AGC NEST: short online MCQ test (approx. 45 minutes); scholarship is typically declared immediately and used for both selection and scholarship purposes",
+          "National/State exams (JEE Main, CMAT, CUET): candidate must have a valid scorecard meeting the college's cut-off marks"
+        ]
+      },
+      {
+        "step": 4,
+        "title": "Counselling and Document Verification",
+        "details": [
+          "Shortlisted candidates attend a counselling session (online via video conferencing, or offline)",
+          "Final selection and seat allocation is based on merit (entrance exam score or qualifying exam marks)",
+          "Documents required for verification: Class 10th and 12th mark sheets and certificates, Graduation mark sheet and certificate (for PG), Entrance exam scorecard (JEE/CMAT/CUET/AGC NEST), Transfer/Migration certificate, Character certificate, Aadhaar card/ID proof, Caste certificate and Income certificate (if applicable)"
+        ]
+      },
+      {
+        "step": 5,
+        "title": "Seat Confirmation and Fee Payment",
+        "details": [
+          "Once documents are verified and seat is allocated, candidate receives a provisional admission letter",
+          "Candidate must pay first-semester/annual course fees to confirm and secure the allotted seat"
+        ]
+      }
+    ]
+  },
+
+  "management_quota_procedures": [
+    {
+      "category": "Within Punjab State - UG Courses",
+      "steps": [
+        "1/3 of total intake is management quota; remaining 2/3 filled through IKGPTU online counseling",
+        "Admission advertised in regional newspapers (Punjabi, Hindi, English) and on college website www.agcamritsar.in",
+        "Interested students submit forms; data uploaded into college CRM (online portal)",
+        "Students register for AGC NEST (National Entrance Scholarship Test) with a fee of Rs. 500 (excluding college prospectus)",
+        "After clearing the entrance test, student becomes eligible for admission along with scholarship",
+        "Counseling schedule notified based on JEE, 12th marks, and AGC NEST ranks by Department of CCIE",
+        "Fee and documents must be submitted within 15 days from declaration of entrance exam results and AGC NEST scholarship amount",
+        "Fee payable via Cash, Cheque, Demand Draft, or UPI",
+        "Student admitted provisionally after fee and document submission",
+        "Department of CCIE schedules 3 to 4 counseling rounds to fill seats"
+      ]
+    },
+    {
+      "category": "Within Punjab State - PG Courses",
+      "steps": [
+        "1/3 of total intake is management quota; remaining 2/3 filled through IKGPTU online counseling",
+        "Admission advertised in regional newspapers and on college website www.agcamritsar.in",
+        "Interested students submit forms; data uploaded into college CRM",
+        "Students register for AGC NEST with a fee of Rs. 500 (excluding college prospectus)",
+        "Counseling schedule notified based on Graduation marks by Department of CCIE",
+        "Fee and documents must be submitted within 15 days after AGC NEST registration",
+        "Fee payable via Cash, Cheque, Demand Draft, or UPI",
+        "Student admitted provisionally after fee and document submission",
+        "Department of CCIE schedules 3 to 4 counseling rounds to fill seats"
+      ]
+    },
+    {
+      "category": "From Other States - UG Courses",
+      "steps": [
+        "1/3 of total intake is management quota; remaining 2/3 filled through IKGPTU online counseling",
+        "Admission advertised in regional newspapers and on college website www.agcamritsar.in",
+        "Interested students submit forms; data uploaded into college CRM",
+        "Students register for AGC NEST with a fee of Rs. 500 (excluding college prospectus)",
+        "After clearing the entrance test, student becomes eligible for admission along with scholarship",
+        "Counseling schedule notified based on 10th marks and AGC NEST ranks by Department of CCIE",
+        "Fee and documents must be submitted within 15 days from declaration of entrance exam results",
+        "Fee payable via Cash, Cheque, Demand Draft, or UPI",
+        "Student admitted provisionally after fee and document submission",
+        "Department of CCIE schedules 3 to 4 counseling rounds to fill seats"
+      ]
+    },
+    {
+      "category": "From Other States - PG Courses",
+      "steps": [
+        "1/3 of total intake is management quota; remaining 2/3 filled through IKGPTU online counseling",
+        "Admission advertised in regional newspapers and on college website www.agcamritsar.in",
+        "Interested students submit forms; data uploaded into college CRM",
+        "Students register for AGC NEST with a fee of Rs. 500 (excluding college prospectus)",
+        "Counseling schedule notified based on Graduation marks by Department of CCIE",
+        "Fee and documents must be submitted within 15 days after AGC NEST registration",
+        "Fee payable via Cash, Cheque, Demand Draft, or UPI",
+        "Student admitted provisionally after fee and document submission",
+        "Department of CCIE schedules 3 to 4 counseling rounds to fill seats"
+      ]
+    },
+    {
+      "category": "Within Punjab State - Lateral Entry Courses",
+      "steps": [
+        "1/3 of total intake is management quota; remaining 2/3 filled through IKGPTU online counseling",
+        "Admission advertised in regional newspapers and on college website www.agcamritsar.in",
+        "Interested students submit forms; data uploaded into college CRM",
+        "Students register online with a fee of Rs. 500 (excluding college prospectus)",
+        "After successful registration, student becomes eligible for admission",
+        "Counseling schedule notified based on diploma marks by Department of CCIE",
+        "Fee and documents must be submitted within 15 days from date of counseling",
+        "Fee payable via Cash, Cheque, Demand Draft, or UPI",
+        "Student admitted provisionally after fee and document submission",
+        "Department of CCIE schedules 3 to 4 counseling rounds to fill seats"
+      ]
+    },
+    {
+      "category": "From Other States - Lateral Entry Courses",
+      "steps": [
+        "1/3 of total intake is management quota; remaining 2/3 filled through IKGPTU online counseling",
+        "Admission advertised in regional newspapers and on college website www.agcamritsar.in",
+        "Interested students submit forms; data uploaded into college CRM",
+        "Students register online with a fee of Rs. 500 (excluding college prospectus)",
+        "After successful registration, student becomes eligible for admission",
+        "Counseling schedule notified based on diploma marks by Department of CCIE",
+        "Fee and documents must be submitted within 15 days from date of counseling",
+        "Fee payable via Cash, Cheque, Demand Draft, or UPI",
+        "Student admitted provisionally after fee and document submission",
+        "Department of CCIE schedules 3 to 4 counseling rounds to fill seats"
+      ]
+    },
+    {
+      "category": "B.Vocational Courses",
+      "steps": [
+        "Admission advertised in regional newspapers (Punjabi, Hindi, English) and on college website www.agcamritsar.in",
+        "Interested students submit forms; data uploaded into college CRM",
+        "Students register online with a fee of Rs. 500",
+        "Fee and documents must be submitted within 15 days from date of AGC NEST registration",
+        "Fee payable via Cash, Cheque, Demand Draft, or UPI",
+        "Student's provisional admission confirmed after fee and document submission"
+      ]
+    }
+  ],
+
+  "branch_upgradation_regulations": {
+    "applies_to": "Engineering, PG & UG Courses",
+    "rules": [
+      "Upgradation process carried out prior to commencement of 3rd semester, based on 1st and 2nd semester results",
+      "Only students who cleared all subjects of 1st and 2nd semester in B.Tech can participate",
+      "Dean CCIE invites applications from eligible students with a specified last date; date/time of upgradation notified on college notice boards",
+      "Last date to submit applications must be at least 2 days before the upgradation date",
+      "Merit list prepared based on 1st and 2nd semester results and displayed on notice board once results are declared",
+      "Branch upgradation takes place only after an official notification is issued by the University",
+      "Branch-wise seat availability is notified and displayed on the notice board",
+      "On the date of upgradation, applicants are called in order of merit",
+      "A student absent at the time of upgradation loses their chance and has no claim to the converted seat",
+      "Signed upgradation record (by Principal/Director) is notified on notice boards, and a copy sent to the University for approval the next working day"
+    ],
+    "notes": [
+      "Upgradation of branch takes precedence over Intra University and Inter University migration",
+      "Upgradation is done only based on availability of seats in the particular course"
+    ]
+  },
+
+  "migration_regulations": {
+    "rules": [
+      "Migration from another college within the University allowed only after completion of 1st year, and only for students eligible to register for 3rd semester",
+      "Migration allowed after completion of 2nd semester but before start of 3rd semester",
+      "Candidates cannot change their discipline of study during migration"
+    ],
+    "order_of_preference": [
+      "Branch upgradation (if applicable) carried out at college level based on 1st and 2nd semester results",
+      "Merit based on combined 1st and 2nd semester marks forms the basis of migration",
+      "Preference given to students who cleared all subjects of the first year"
+    ],
+    "intra_university_migration_procedure": [
+      "Both the current institute and the institute migration is sought to must issue a No Objection Certificate (NOC)",
+      "Student must submit a signed written application along with NOCs from both colleges",
+      "University authorizes migration only against a vacant seat in the discipline sought",
+      "Migration additionally governed by rules of the concerned college, if applicable"
+    ],
+    "migration_from_other_universities": {
+      "condition": "Allowed 15 days prior to start of 3rd semester, for students migrating from other recognized universities",
+      "requirements": [
+        "Candidate must have passed all first-year courses at the university they are migrating from",
+        "First-year courses studied must be equivalent to those offered at this University; supplementary subjects (if any) should not exceed two",
+        "Candidate must furnish an undertaking to attend classes and pass any deficient courses",
+        "Both institutes and universities involved must have no objection to the migration",
+        "A vacant seat must be available in the discipline sought",
+        "Migration additionally governed by rules of the concerned University"
+      ]
+    },
+    "notes": [
+      "Branch shifting within college as per merit under PTU rules takes precedence over Intra/Inter University migration",
+      "Intra-University migration is given preference over Inter-University migration"
+    ]
+  },
+
+  "application_fee": {
+    "agc_nest_registration_fee": 500,
+    "currency": "INR",
+    "note": "Excludes college prospectus cost",
+    "payment_modes": ["Cash", "Cheque", "Demand Draft", "UPI"]
+  },
+
+  "application_portal_url": "https://www.agcamritsar.in"
+}
