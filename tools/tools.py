@@ -6,6 +6,7 @@ that describe them to the LLM (Ollama tool-calling format).
 
 import json
 import os
+import difflib
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "structured")
 CSV_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "raw", "csvs")
@@ -75,10 +76,6 @@ def _load(filename):
 
 
 # ---------- Tool implementations ----------
-
-def get_important_dates():
-    return _load("dates.json")
-
 
 def get_application_steps(category: str = None):
     data = _load("application_process.json")
@@ -151,6 +148,180 @@ def get_grievance_info(topic: str = None):
     return data.get("student_grievance_redressal")
 
 
+def _fuzzy_find_course(query: str, courses_list: list, name_key: str = "Program"):
+    """
+    Fallback fuzzy matcher: if exact substring/alias matching finds nothing,
+    this finds the closest matching course name using similarity scoring.
+    Handles typos, unlisted abbreviations, and slightly different phrasing
+    without needing a hardcoded alias for every one of the 41 courses.
+    """
+    names = [c.get(name_key, "") for c in courses_list if c.get(name_key, "").strip()]
+    close = difflib.get_close_matches(query, names, n=1, cutoff=0.4)
+    if not close:
+        return None
+    best_name = close[0]
+    for c in courses_list:
+        if c.get(name_key, "") == best_name:
+            return c
+    return None
+
+
+def _classify_level(course_name: str) -> str:
+    """Classifies a course as UG, PG, or Doctorate based on its name."""
+    lower = course_name.strip().lower()
+    if lower.startswith("pharm.d"):
+        return "Doctorate"
+    if "bachelor" in lower:
+        return "UG"
+    if "master" in lower:
+        return "PG"
+    # Fallback: check the first letter of the abbreviation (e.g. "B.Sc.", "M.Tech.")
+    first_word = lower.split()[0] if lower.split() else ""
+    if first_word.startswith("b"):
+        return "UG"
+    if first_word.startswith("m"):
+        return "PG"
+    return "Other"
+
+
+# Maps 12th-grade stream to the disciplines that typically require/suit that
+# background - based on standard Indian education stream conventions.
+STREAM_TO_DISCIPLINES = {
+    "medical": ["Pharmacy", "Paramedical"],
+    "pcb": ["Pharmacy", "Paramedical"],
+    "non-medical": ["Engineering"],
+    "nonmedical": ["Engineering"],
+    "pcm": ["Engineering"],
+    "commerce": ["Management"],
+    "arts": ["Hotel Management", "Fashion Design", "Computer Applications", "Management"],
+    "humanities": ["Hotel Management", "Fashion Design", "Computer Applications", "Management"],
+}
+
+
+def get_courses_by_stream(stream: str):
+    """
+    Given a 12th-grade stream (medical, non-medical, commerce, arts), returns
+    courses from disciplines that typically suit that background. This lets
+    students ask in natural terms ('medical stream') instead of needing to
+    know exact course/discipline names.
+    """
+    stream_key = stream.strip().lower().replace(" ", "-")
+    disciplines = STREAM_TO_DISCIPLINES.get(stream_key)
+    if not disciplines:
+        return {"error": f"Unrecognized stream '{stream}'. Try 'medical', 'non-medical', 'commerce', or 'arts'."}
+
+    rows = _load_csv("courses.csv")
+    if isinstance(rows, dict) and "error" in rows:
+        return rows
+
+    matches = [
+        {"course": row.get("Program", "").strip(), "duration": row.get("Duration (from Program)", "").strip(), "discipline": row.get("Discipline", "").strip()}
+        for row in rows
+        if row.get("Discipline", "").strip() in disciplines and row.get("Program", "").strip()
+    ]
+    display_text = "\n".join(f"- {c['course']} ({c['duration']})" for c in matches)
+    return {
+        "stream": stream,
+        "matched_disciplines": disciplines,
+        "count": len(matches),
+        "courses": matches,
+        "display_text": display_text,
+        "note": "This is a general guideline based on discipline. Exact eligibility should be confirmed with the admission office.",
+    }
+
+
+def get_all_courses_list():
+    """
+    Returns a clean, simplified list of ALL courses (just name + duration),
+    stripped of extra columns and blank rows, plus a ready-to-display text
+    block so the model can relay it directly instead of reformatting itself.
+    """
+    rows = _load_csv("courses.csv")
+    if isinstance(rows, dict) and "error" in rows:
+        return rows
+
+    courses = [
+        {"course": row.get("Program", "").strip(), "duration": row.get("Duration (from Program)", "").strip()}
+        for row in rows
+        if row.get("Program", "").strip()
+    ]
+    display_text = "\n".join(f"- {c['course']} ({c['duration']})" for c in courses)
+    return {"count": len(courses), "courses": courses, "display_text": display_text}
+
+
+def get_courses_by_level(level: str):
+    """
+    Returns courses filtered by level: 'UG', 'PG', or 'Doctorate'.
+    Filtering is done in Python (reliable) rather than asking the model to
+    separate UG/PG itself from a mixed list.
+    """
+    rows = _load_csv("courses.csv")
+    if isinstance(rows, dict) and "error" in rows:
+        return rows
+
+    level_normalized = level.strip().upper()
+    if level_normalized not in ("UG", "PG", "DOCTORATE"):
+        return {"error": "level must be 'UG', 'PG', or 'Doctorate'"}
+
+    matches = []
+    for row in rows:
+        program = row.get("Program", "").strip()
+        if not program:
+            continue
+        if _classify_level(program).upper() == level_normalized:
+            matches.append({"course": program, "duration": row.get("Duration (from Program)", "").strip()})
+
+    display_text = "\n".join(f"- {c['course']} ({c['duration']})" for c in matches)
+    return {"count": len(matches), "courses": matches, "display_text": display_text}
+
+
+def get_program_summary():
+    """
+    Returns pre-computed aggregate stats (total programs, total intake, etc.)
+    calculated in Python - never let the LLM do this math itself, since small
+    models make arithmetic errors when summing long lists.
+    """
+    rows = _load_csv("courses.csv")
+    if isinstance(rows, dict) and "error" in rows:
+        return rows
+
+    total_programs = len(rows)
+    total_intake = 0
+    by_discipline = {}
+
+    for row in rows:
+        intake_str = row.get("Intake", "").strip()
+        intake = int(intake_str) if intake_str.isdigit() else 0
+        total_intake += intake
+
+        discipline = row.get("Discipline", "Unknown")
+        by_discipline[discipline] = by_discipline.get(discipline, 0) + intake
+
+    return {
+        "total_programs": total_programs,
+        "total_intake_across_all_programs": total_intake,
+        "intake_by_discipline": by_discipline,
+    }
+
+
+def get_eligibility_info(discipline: str = None):
+    """
+    Returns general subject-stream eligibility norms by discipline (e.g. PCM for
+    B.Tech). Does NOT include exact percentage cutoffs - those vary by institute
+    and must be confirmed via escalate_to_admission_office.
+    """
+    data = _load("eligibility.json")
+    if not discipline:
+        return data
+
+    query = discipline.lower().strip()
+    matches = [
+        e for e in data.get("eligibility_by_discipline", [])
+        if query in e.get("discipline", "").lower()
+    ]
+    return matches if matches else {"error": f"No eligibility info found for '{discipline}'"}
+
+
 def get_course_info(course_name: str = None):
     """
     Reads the real courses.csv (Discipline, Program, Duration, Intake).
@@ -180,6 +351,14 @@ def get_course_info(course_name: str = None):
                 matches.append(row)
                 break
 
+    # Fallback: if exact/alias matching found nothing, try fuzzy matching
+    # against the full official course name list (catches typos, unlisted
+    # abbreviations, or slightly different phrasing)
+    if not matches:
+        fuzzy_match = _fuzzy_find_course(course_name, rows, name_key="Program")
+        if fuzzy_match:
+            matches = [fuzzy_match]
+
     return matches if matches else {"error": f"No course found matching '{course_name}'"}
 
 
@@ -197,7 +376,7 @@ def get_semester_fee_structure(course_name: str):
         if val is None:
             return None
         val = str(val).strip()
-        if val in ("—", "-", "", "N/A"):
+        if val.lower() in ("—", "-", "", "n/a", "na", "not applicable", "none", "nil"):
             return None
         try:
             return int(val.replace(",", ""))
@@ -223,6 +402,10 @@ def get_semester_fee_structure(course_name: str):
         if match:
             break
 
+    # Fallback: fuzzy match against the official fee-list course names
+    if not match:
+        match = _fuzzy_find_course(course_name, rows, name_key="Course")
+
     if not match:
         return {"error": f"No fee data found for course matching '{course_name}'"}
 
@@ -233,10 +416,25 @@ def get_semester_fee_structure(course_name: str):
             if cleaned is not None:
                 semester_fees[key] = cleaned
 
+    total_fee = clean_number(match.get("Total"))
+
+    def format_fee(val):
+        """Safely formats a fee value - handles both real numbers and any
+        unexpected non-numeric text without crashing."""
+        if isinstance(val, int):
+            return f"Rs. {val:,}"
+        return f"Rs. {val}"
+
+    display_lines = [f"- {sem}: {format_fee(fee)}" for sem, fee in semester_fees.items()]
+    display_lines.append(f"- Total ({len(semester_fees)} semesters): {format_fee(total_fee)}")
+    display_text = "\n".join(display_lines)
+
     return {
         "course": match.get("Course"),
         "semester_wise_fees": semester_fees,
-        "total_fee": clean_number(match.get("Total")),
+        "total_fee": total_fee,
+        "number_of_semesters": len(semester_fees),
+        "display_text": display_text,
     }
 
 
@@ -281,14 +479,6 @@ def query_csv(filename: str, filter_column: str = None, filter_value: str = None
 # ---------- Tool schemas (Ollama / OpenAI-style function calling format) ----------
 
 TOOL_SCHEMAS = [
-    {
-        "type": "function",
-        "function": {
-            "name": "get_important_dates",
-            "description": "Get important admission dates like application deadline, exam dates, counseling dates.",
-            "parameters": {"type": "object", "properties": {}, "required": []}
-        }
-    },
     {
         "type": "function",
         "function": {
@@ -401,6 +591,64 @@ TOOL_SCHEMAS = [
     {
         "type": "function",
         "function": {
+            "name": "get_courses_by_stream",
+            "description": "Get courses suited for a student's 12th-grade stream. Use this whenever a student asks which courses they can take based on their stream (e.g. 'medical stream', 'non-medical', 'PCB', 'commerce', 'arts') rather than trying to figure it out yourself. Returns a ready-formatted 'display_text' - output it directly.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "stream": {"type": "string", "description": "'medical', 'non-medical', 'commerce', or 'arts'"}
+                },
+                "required": ["stream"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_all_courses_list",
+            "description": "Get ALL courses (name + duration). Returns a 'display_text' field that is ALREADY formatted as a bullet list - when answering, output that display_text directly to the student rather than reformatting it yourself. Use get_courses_by_level instead if the student specifically asks for UG or PG courses only.",
+            "parameters": {"type": "object", "properties": {}, "required": []}
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_courses_by_level",
+            "description": "Get courses filtered to only 'UG' (undergraduate/Bachelor's), 'PG' (postgraduate/Master's), or 'Doctorate'. Use this whenever the student specifically asks for undergraduate or postgraduate courses - the filtering is already done correctly, do not try to separate UG/PG yourself from get_all_courses_list. Returns a ready-formatted 'display_text' field - output it directly.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "level": {"type": "string", "description": "'UG', 'PG', or 'Doctorate'"}
+                },
+                "required": ["level"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_program_summary",
+            "description": "Get pre-calculated aggregate stats: total number of programs, total intake/seats across ALL programs, and intake broken down by discipline. ALWAYS use this for any question asking for a total, sum, or count across multiple courses - never try to add up numbers yourself from get_course_info results.",
+            "parameters": {"type": "object", "properties": {}, "required": []}
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_eligibility_info",
+            "description": "Get general subject-stream eligibility norms (e.g. PCM required for B.Tech) by discipline. Does NOT include exact percentage cutoffs - if the student asks for a specific minimum percentage, tell them this isn't available and escalate.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "discipline": {"type": "string", "description": "Discipline name, e.g. 'Engineering', 'Pharmacy', 'Law'"}
+                },
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
             "name": "get_course_info",
             "description": "Get real course info (discipline, program name, duration, intake/seats) for a course. This is the authoritative course list. Omit course_name to list all 41 courses.",
             "parameters": {
@@ -416,7 +664,7 @@ TOOL_SCHEMAS = [
         "type": "function",
         "function": {
             "name": "get_semester_fee_structure",
-            "description": "Get the real semester-wise fee breakdown for a course (e.g. 'B.Tech CSE', 'MBA', 'B.Pharmacy'). This is the authoritative fee source - prefer this over query_csv for fee questions.",
+            "description": "Get the real semester-wise fee breakdown for a course (e.g. 'B.Tech CSE', 'MBA', 'B.Pharmacy'). This is the authoritative fee source. Returns a ready-formatted 'display_text' listing each actual semester's fee - output that directly, do not group or re-summarize the semesters yourself, the number of semesters varies by course and you will invent wrong groupings if you try.",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -454,7 +702,6 @@ TOOL_SCHEMAS = [
 
 # Maps tool name -> actual Python function, used by the agent loop to execute calls
 TOOL_FUNCTIONS = {
-    "get_important_dates": get_important_dates,
     "get_application_steps": get_application_steps,
     "get_counselling_schedule": get_counselling_schedule,
     "get_hostel_info": get_hostel_info,
@@ -464,6 +711,11 @@ TOOL_FUNCTIONS = {
     "get_anti_ragging_info": get_anti_ragging_info,
     "get_grievance_info": get_grievance_info,
     "escalate_to_admission_office": escalate_to_admission_office,
+    "get_courses_by_stream": get_courses_by_stream,
+    "get_all_courses_list": get_all_courses_list,
+    "get_courses_by_level": get_courses_by_level,
+    "get_program_summary": get_program_summary,
+    "get_eligibility_info": get_eligibility_info,
     "get_course_info": get_course_info,
     "get_semester_fee_structure": get_semester_fee_structure,
     "list_available_csv_files": list_available_csv_files,

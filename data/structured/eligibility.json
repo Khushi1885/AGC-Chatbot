@@ -1,0 +1,90 @@
+{
+  "note": "Subject stream requirements below follow standard, widely-followed Indian higher education norms for each course type. Exact minimum percentage cutoffs and entrance exam requirements vary by institute/year and are NOT included here - these must be confirmed via the admission office rather than guessed.",
+
+  "eligibility_by_discipline": [
+    {
+      "discipline": "Engineering (B.Tech)",
+      "qualifying_exam": "10+2",
+      "required_stream": "PCM (Physics, Chemistry, Mathematics)",
+      "entrance_exam_note": "Usually JEE Main, State CET, or the college's own entrance test (see application_process.json)"
+    },
+    {
+      "discipline": "Engineering - Lateral Entry (2nd year B.Tech)",
+      "qualifying_exam": "Diploma in relevant Engineering branch",
+      "required_stream": "Relevant Engineering Diploma",
+      "entrance_exam_note": "Usually no separate entrance exam; merit based on diploma marks"
+    },
+    {
+      "discipline": "Pharmacy (B.Pharmacy)",
+      "qualifying_exam": "10+2",
+      "required_stream": "PCB or PCM (Physics, Chemistry, and Biology or Mathematics)",
+      "entrance_exam_note": "May require PCAT or state pharmacy entrance test depending on state rules"
+    },
+    {
+      "discipline": "Pharmacy - Lateral Entry",
+      "qualifying_exam": "Diploma in Pharmacy (D.Pharmacy)",
+      "required_stream": "D.Pharmacy",
+      "entrance_exam_note": "Usually no separate entrance exam"
+    },
+    {
+      "discipline": "Pharm.D",
+      "qualifying_exam": "10+2",
+      "required_stream": "PCB (Physics, Chemistry, Biology)",
+      "entrance_exam_note": "As per Pharmacy Council of India norms"
+    },
+    {
+      "discipline": "Computer Applications (BCA)",
+      "qualifying_exam": "10+2",
+      "required_stream": "Any stream, Mathematics recommended",
+      "entrance_exam_note": "Usually no separate entrance exam; merit-based or via CUET"
+    },
+    {
+      "discipline": "Computer Applications (MCA)",
+      "qualifying_exam": "Graduation",
+      "required_stream": "Graduation with Mathematics as a subject (varies by university)",
+      "entrance_exam_note": "May require CUET-PG or NIMCET depending on institute"
+    },
+    {
+      "discipline": "Management (BBA)",
+      "qualifying_exam": "10+2",
+      "required_stream": "Any stream",
+      "entrance_exam_note": "Usually no separate entrance exam; merit-based or via CUET"
+    },
+    {
+      "discipline": "Management (MBA)",
+      "qualifying_exam": "Graduation (any stream)",
+      "required_stream": "Any stream",
+      "entrance_exam_note": "Usually CMAT, MAT, CAT, or the college's own entrance test"
+    },
+    {
+      "discipline": "Hotel Management (BHMCT)",
+      "qualifying_exam": "10+2",
+      "required_stream": "Any stream",
+      "entrance_exam_note": "Usually no separate entrance exam; some institutes use NCHMCT JEE"
+    },
+    {
+      "discipline": "Applied Sciences (B.Sc / M.Sc)",
+      "qualifying_exam": "10+2 (for B.Sc) or Graduation (for M.Sc)",
+      "required_stream": "PCM or PCB depending on specialization",
+      "entrance_exam_note": "Usually merit-based on qualifying exam marks"
+    },
+    {
+      "discipline": "Fashion Design",
+      "qualifying_exam": "10+2",
+      "required_stream": "Any stream",
+      "entrance_exam_note": "Some institutes require a design aptitude test"
+    },
+    {
+      "discipline": "Law (LLB - 3 year)",
+      "qualifying_exam": "Graduation (any stream)",
+      "required_stream": "Any stream",
+      "entrance_exam_note": "Usually CLAT, LSAT, or state law entrance test"
+    },
+    {
+      "discipline": "Law (BA LLB - 5 year integrated)",
+      "qualifying_exam": "10+2",
+      "required_stream": "Any stream",
+      "entrance_exam_note": "Usually CLAT, LSAT, or state law entrance test"
+    }
+  ]
+}

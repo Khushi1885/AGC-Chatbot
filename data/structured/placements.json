@@ -1,0 +1,26 @@
+{
+  "yearly_placement_summary": [
+    {"year": 2025, "students_placed": 350},
+    {"year": 2024, "students_placed": 344},
+    {"year": 2023, "students_placed": 363},
+    {"year": 2022, "students_placed": 295},
+    {"year": 2021, "students_placed": 166},
+    {"year": 2020, "students_placed": 139},
+    {"year": 2019, "students_placed": 227},
+    {"year": 2018, "students_placed": 322},
+    {"year": 2017, "students_placed": 159},
+    {"year": 2016, "students_placed": 119},
+    {"year": 2015, "students_placed": 135},
+    {"year": 2014, "students_placed": 171},
+    {"year": 2013, "students_placed": 73},
+    {"year": 2012, "students_placed": 168},
+    {"year": 2011, "students_placed": 202},
+    {"year": 2010, "students_placed": 150},
+    {"year": 2009, "students_placed": 87},
+    {"year": 2008, "students_placed": 133},
+    {"year": 2007, "students_placed": 155},
+    {"year": 2006, "students_placed": 117}
+  ],
+  "total_students_placed_all_years": 3875,
+  "note": "This is college-wide yearly placement count, not broken down by course. For course-specific placement stats, add that data separately to placements.json."
+}

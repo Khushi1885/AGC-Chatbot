@@ -85,23 +85,44 @@ def chat(req: ChatRequest):
         session["lead"]["email"] = text
         session["stage"] = "chat"
 
-        # Save the completed lead to the database
-        db.save_lead(
-            session_id=req.session_id,
-            name=session["lead"]["name"],
-            mobile=session["lead"]["mobile"],
-            email=session["lead"]["email"],
-        )
-
         name = session["lead"]["name"]
+        mobile = session["lead"]["mobile"]
+        email = session["lead"]["email"]
+
+        # Check if this mobile or email is already registered from a previous chat
+        existing = db.find_existing_lead(mobile, email)
+        if existing:
+            return ChatResponse(
+                reply=f"Looks like you've already chatted with us before, {name}! "
+                      f"This mobile number or email is already registered. "
+                      f"Go ahead and ask your question - I'm ready to help."
+            )
+
+        # Save the completed lead to the database
+        try:
+            db.save_lead(session_id=req.session_id, name=name, mobile=mobile, email=email)
+            print(f"[DB] Lead saved successfully: {session['lead']}")
+        except Exception as e:
+            print(f"[DB ERROR] Failed to save lead: {e}")
+
         return ChatResponse(
             reply=f"Thanks {name}! You're all set. Ask me anything about courses, fees, "
                   f"eligibility, deadlines, hostel, or scholarships."
         )
 
     # stage == "chat" -> normal agentic conversation
-    reply, updated_history = run_agent(req.message, session["history"])
+    reply, updated_history, courses_discussed = run_agent(req.message, session["history"])
     session["history"] = updated_history
+
+    # Log any newly-discussed courses for this session (used for follow-up email automation)
+    for course_name in courses_discussed:
+        try:
+            if not db.was_course_already_logged(req.session_id, course_name):
+                db.log_course_interest(req.session_id, course_name)
+                print(f"[DB] Logged course interest: {course_name} for session {req.session_id}")
+        except Exception as e:
+            print(f"[DB ERROR] Failed to log course interest: {e}")
+
     return ChatResponse(reply=reply)
 
 
