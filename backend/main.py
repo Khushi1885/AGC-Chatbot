@@ -17,6 +17,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from agent import run_agent  # noqa: E402
 import db  # noqa: E402
+import email_service  # noqa: E402
 
 app = FastAPI(title="AGC Admission Assistant API")
 
@@ -118,7 +119,12 @@ def chat(req: ChatRequest):
     for course_name in courses_discussed:
         try:
             if not db.was_course_already_logged(req.session_id, course_name):
-                db.log_course_interest(req.session_id, course_name)
+                db.log_course_interest(
+                    req.session_id,
+                    course_name,
+                    mobile=session["lead"].get("mobile"),
+                    email=session["lead"].get("email"),
+                )
                 print(f"[DB] Logged course interest: {course_name} for session {req.session_id}")
         except Exception as e:
             print(f"[DB ERROR] Failed to log course interest: {e}")
@@ -136,3 +142,42 @@ def admin_leads(x_admin_key: str = Header(default="")):
     if x_admin_key != ADMIN_KEY:
         raise HTTPException(status_code=401, detail="Invalid admin key")
     return {"leads": db.get_all_leads()}
+
+
+class ApplicationRequest(BaseModel):
+    name: str
+    mobile: str
+    email: str = ""
+    program: str
+    state: str = ""
+    category: str = ""
+
+
+class ApplicationResponse(BaseModel):
+    success: bool
+    message: str
+
+
+@app.post("/apply", response_model=ApplicationResponse)
+def apply(req: ApplicationRequest):
+    try:
+        db.save_application(req.name, req.mobile, req.email, req.program, req.state, req.category)
+        print(f"[DB] Application saved: {req.name} - {req.program}")
+    except Exception as e:
+        print(f"[DB ERROR] Failed to save application: {e}")
+        return ApplicationResponse(
+            success=False,
+            message="We couldn't save your application right now. Please try again or call +91 8872009950.",
+        )
+
+    if req.email:
+        email_service.send_application_confirmation(req.email, req.name, req.program)
+
+    return ApplicationResponse(success=True, message="Application submitted successfully!")
+
+
+@app.get("/admin/applications")
+def admin_applications(x_admin_key: str = Header(default="")):
+    if x_admin_key != ADMIN_KEY:
+        raise HTTPException(status_code=401, detail="Invalid admin key")
+    return {"applications": db.get_all_applications()}

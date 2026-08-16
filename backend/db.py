@@ -50,15 +50,18 @@ def init_db():
     pass
 
 
-def log_course_interest(session_id: str, course_name: str):
+def log_course_interest(session_id: str, course_name: str, mobile: str = None, email: str = None):
     """
-    Records that a student showed interest in (asked about) a specific course.
+    Records that a student showed interest in (asked about) a specific course,
+    along with their contact info for follow-up (e.g. sending a brochure email).
     Uses upsert with the unique(session_id, course_name) constraint so the same
     course is never logged twice for the same session.
     """
     supabase.table("course_interest").upsert({
         "session_id": session_id,
         "course_name": course_name,
+        "mobile": mobile,
+        "email": email,
     }, on_conflict="session_id,course_name").execute()
 
 
@@ -71,6 +74,27 @@ def was_course_already_logged(session_id: str, course_name: str) -> bool:
         .execute()
     )
     return len(result.data) > 0
+
+
+def save_application(name: str, mobile: str, email: str, program: str, state: str, category: str):
+    supabase.table("applications").insert({
+        "name": name,
+        "mobile": mobile,
+        "email": email,
+        "program": program,
+        "state": state,
+        "category": category,
+    }).execute()
+
+
+def get_all_applications():
+    result = (
+        supabase.table("applications")
+        .select("*")
+        .order("created_at", desc=True)
+        .execute()
+    )
+    return result.data
 
 
 def find_existing_lead(mobile: str, email: str):
