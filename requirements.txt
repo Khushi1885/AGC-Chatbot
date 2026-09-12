@@ -7,3 +7,5 @@ fastapi==0.115.0
 uvicorn==0.30.6
 supabase==2.9.0
 Pillow==10.4.0
+scikit-learn==1.5.2
+joblib==1.4.2

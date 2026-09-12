@@ -76,7 +76,7 @@ def was_course_already_logged(session_id: str, course_name: str) -> bool:
     return len(result.data) > 0
 
 
-def save_application(name: str, mobile: str, email: str, program: str, state: str, category: str):
+def save_application(name: str, mobile: str, email: str, program: str, state: str, category: str, meeting_time: str = None):
     supabase.table("applications").insert({
         "name": name,
         "mobile": mobile,
@@ -84,6 +84,7 @@ def save_application(name: str, mobile: str, email: str, program: str, state: st
         "program": program,
         "state": state,
         "category": category,
+        "meeting_time": meeting_time,
     }).execute()
 
 
@@ -123,6 +124,36 @@ def save_lead(session_id: str, name: str, mobile: str, email: str):
 def get_all_leads():
     result = (
         supabase.table("leads")
+        .select("*")
+        .order("created_at", desc=True)
+        .execute()
+    )
+    return result.data
+
+
+def save_nest_registration(session_id: str, name: str, email: str, mobile: str,
+                            course: str, state: str, category: str,
+                            username: str, password: str,
+                            percentage: float = None, lead_score: float = None, lead_label: str = None):
+    supabase.table("agc_nest_registrations").insert({
+        "session_id": session_id,
+        "name": name,
+        "email": email,
+        "mobile": mobile,
+        "course": course,
+        "state": state,
+        "category": category,
+        "username": username,
+        "password": password,
+        "percentage": percentage,
+        "lead_score": lead_score,
+        "lead_label": lead_label,
+    }).execute()
+
+
+def get_all_nest_registrations():
+    result = (
+        supabase.table("agc_nest_registrations")
         .select("*")
         .order("created_at", desc=True)
         .execute()

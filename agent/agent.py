@@ -6,12 +6,31 @@ until the model gives a final text answer.
 """
 
 import json
+import re
 import requests
 import sys
 import os
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "tools"))
 from tools import TOOL_SCHEMAS, TOOL_FUNCTIONS  # noqa: E402
+
+
+def _sanitize_reply(text: str) -> str:
+    """
+    Code-level safety net: strips any leaked internal tool/function names from
+    the model's reply, in case it ignores the system prompt instruction not to
+    mention them. Handles plain text mentions and markdown-link forms like
+    "[escalate_to_admission_office](#...)".
+    """
+    if not text:
+        return text
+    tool_names = sorted(TOOL_FUNCTIONS.keys(), key=len, reverse=True)
+    for name in tool_names:
+        # Markdown link form: [tool_name](anything)
+        text = re.sub(r"\[" + re.escape(name) + r"\]\([^)]*\)", "our admission team", text)
+        # Plain text form
+        text = re.sub(re.escape(name), "our admission team", text)
+    return text
 
 OLLAMA_URL = "http://localhost:11434/api/chat"
 MODEL_NAME = "qwen3:1.7b"
@@ -117,10 +136,16 @@ Rules:
   will get this wrong and mislead the student about their actual fee schedule.
 - Keep answers concise and student-friendly.
 - NEVER mention internal tool/function names (like "get_semester_fee_structure" or
-  "escalate_to_admission_office") in your reply to the student - these are internal
-  code names, not something a student should ever see. If escalation is needed,
-  actually CALL the escalate_to_admission_office tool yourself and share the real
-  contact details it returns - never just write the tool's name as text.
+  "escalate_to_admission_office") in your reply to the student, in ANY form -
+  not as plain text, not as a markdown link like "[escalate_to_admission_office](#...)",
+  not as a clickable reference. These are internal code names, not something a
+  student should ever see or click. If escalation is needed, actually CALL the
+  escalate_to_admission_office tool yourself and write out the real phone number
+  and email it returns as plain text - never reference the tool itself.
+- For ANY question mentioning "counseling dates", "counselling schedule", "when
+  does counseling start", or similar, you MUST call get_counselling_schedule
+  before answering. Never say dates are "not available" without having called
+  this tool first - it has the real IKGPTU dates.
 - For "what courses do you offer" or "list all courses" type questions, use
   get_all_courses_list. For "UG courses" or "PG courses" specifically, use
   get_courses_by_level with level="UG" or level="PG" - the filtering is already
@@ -157,7 +182,7 @@ def run_agent(user_message: str, conversation_history: list = None):
                  "topics. Is there anything about AGC admissions I can help with?")
         messages.append({"role": "user", "content": user_message})
         messages.append({"role": "assistant", "content": reply})
-        return reply, messages, courses_discussed
+        return reply, messages, courses_discussed, []
 
     messages.append({"role": "user", "content": user_message})
 
@@ -187,7 +212,8 @@ def run_agent(user_message: str, conversation_history: list = None):
         if not tool_calls:
             # Final answer - no more tools needed
             messages.append(message)
-            return message.get("content", ""), messages, courses_discussed
+            clean_reply = _sanitize_reply(message.get("content", ""))
+            return clean_reply, messages, courses_discussed, []
 
         # Model wants to call one or more tools
         messages.append(message)
@@ -211,6 +237,19 @@ def run_agent(user_message: str, conversation_history: list = None):
 
             print(f"[TOOL RESULT] {tool_result}")  # debug log
 
+            # Ambiguous course query (e.g. "btech fee" with no specific branch)
+            # -> offer the real branch names as clickable quick-reply options.
+            if (func_name == "get_semester_fee_structure" and isinstance(tool_result, dict)
+                    and tool_result.get("error") == "ambiguous"):
+                options = tool_result.get("options", [])
+                reply = "Which branch would you like the fee details for?"
+                messages.append({
+                    "role": "tool",
+                    "content": json.dumps(tool_result, ensure_ascii=False),
+                })
+                messages.append({"role": "assistant", "content": reply})
+                return reply, messages, courses_discussed, options
+
             # Hard circuit-breaker: for critical accuracy tools, if the tool
             # itself failed (not just "no match"), never let the model try to
             # answer - escalate directly to prevent fabricated numbers.
@@ -226,7 +265,23 @@ def run_agent(user_message: str, conversation_history: list = None):
                     "content": json.dumps(tool_result, ensure_ascii=False),
                 })
                 messages.append({"role": "assistant", "content": reply})
-                return reply, messages, courses_discussed
+                return reply, messages, courses_discussed, []
+
+            # Hard-code the SUCCESS case for fee lookups too. Small models keep
+            # inventing extra semesters or wrong numbers even with display_text
+            # provided, despite instructions. Building the reply directly in
+            # Python guarantees it's always exactly correct.
+            if func_name == "get_semester_fee_structure" and isinstance(tool_result, dict) and "error" not in tool_result:
+                course_name = tool_result.get("course")
+                if course_name:
+                    courses_discussed.append(course_name)
+                reply = f"Here's the fee structure for {course_name}:\n\n{tool_result['display_text']}"
+                messages.append({
+                    "role": "tool",
+                    "content": json.dumps(tool_result, ensure_ascii=False),
+                })
+                messages.append({"role": "assistant", "content": reply})
+                return reply, messages, courses_discussed, []
 
             # Track which course was successfully discussed (for email automation)
             if func_name in COURSE_INTEREST_TOOLS:
@@ -244,7 +299,7 @@ def run_agent(user_message: str, conversation_history: list = None):
             })
 
     return ("Sorry, I couldn't process that after several attempts. Please contact the admission office directly.",
-            messages, courses_discussed)
+            messages, courses_discussed, [])
 
 
 if __name__ == "__main__":
@@ -255,7 +310,9 @@ if __name__ == "__main__":
         user_input = input("You: ").strip()
         if user_input.lower() in ("quit", "exit"):
             break
-        answer, history, courses = run_agent(user_input, history)
+        answer, history, courses, quick_replies = run_agent(user_input, history)
         print(f"\nAgent: {answer}\n")
         if courses:
             print(f"[Courses discussed this turn: {courses}]\n")
+        if quick_replies:
+            print(f"[Quick replies: {quick_replies}]\n")

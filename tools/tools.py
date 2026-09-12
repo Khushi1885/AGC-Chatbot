@@ -387,6 +387,15 @@ def get_semester_fee_structure(course_name: str):
     for prefix in ["b.tech", "btech", "m.tech", "mtech"]:
         query = query.replace(prefix, "").strip()
 
+    # Ambiguous query (e.g. student just said "btech fee" with no specific branch)
+    # -> return the list of real branch names as options instead of guessing.
+    if query in ("", "engineering", "tech"):
+        branch_names = sorted(set(
+            row.get("Course", "") for row in rows
+            if row.get("Course", "").lower().startswith(("b.tech", "m.tech"))
+        ))
+        return {"error": "ambiguous", "options": branch_names}
+
     search_terms = [query]
     for abbr, expansions in COURSE_ALIASES.items():
         if abbr == query or f" {abbr}" in f" {query}":
