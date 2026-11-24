@@ -1,0 +1,351 @@
+S.No.,Student Name,Branch,Company Name
+1,Amritpal singh,B.Pharmacy,Alembic Pharmaceuticals
+2,Arshdeep singh,B.Pharmacy,Alembic Pharmaceuticals
+3,Danish ibrahim,B.Pharmacy,Alembic Pharmaceuticals
+4,Hitesh sharma,B.Pharmacy,Alembic Pharmaceuticals
+5,Manmeet kaur,B.Pharmacy,Alembic Pharmaceuticals
+6,Ragani kumari,B.Pharmacy,Alembic Pharmaceuticals
+7,Rahul kumar,B.Pharmacy,Alembic Pharmaceuticals
+8,vishal rana,B.Pharmacy,Alembic Pharmaceuticals
+9,Anjali,B.Pharmacy,Cipla
+10,Ashveen kaur,B.Pharmacy,Cipla
+11,Atul kumar,B.Pharmacy,Cipla
+12,Avreen kaur,B.Pharmacy,Cipla
+13,hardeep singh,B.Pharmacy,Cipla
+14,Harshal thakur,B.Pharmacy,Cipla
+15,Priya,B.Pharmacy,Cipla
+16,Rubaldeep kaur,B.Pharmacy,Cipla
+17,Vanshika,B.Pharmacy,Cipla
+18,Vaseem Akram,B.Pharmacy,Lividus Pharmaceuticals Pvt.Ltd.
+19,Atish kumar,B.Pharmacy,Systacare Remedies
+20,Dhruv narayan shukla,B.Pharmacy,Systacare Remedies
+21,Harsh kumar,B.Pharmacy,Systacare Remedies
+22,Jatinder singh,B.Pharmacy,Systacare Remedies
+23,Kanchan nadda,B.Pharmacy,Systacare Remedies
+24,keshav kumar,B.Pharmacy,Systacare Remedies
+25,Manpreet singh,B.Pharmacy,Ramson Remedies
+26,Harnoor kaur,B.Pharmacy,Ramson Remedies
+27,Danish manzoor,B.Pharmacy,Biovonic Healthcare Pvt. Ltd.
+28,Jainendra kumar,B.Pharmacy,Biovonic Healthcare Pvt. Ltd.
+29,Preety,B.Pharmacy,Biovonic Healthcare Pvt. Ltd.
+30,sweta raj,B.Pharmacy,Biovonic Healthcare Pvt. Ltd.
+31,Sweta Yadav,B.Pharmacy,Biovonic Healthcare Pvt. Ltd.
+32,vansh sharma,B.Pharmacy,Biovonic Healthcare Pvt. Ltd.
+33,Ajit kumar das,B.Pharmacy,Ravenbhel
+34,Atul kumar,B.Pharmacy,Ravenbhel
+35,Loveleen kaur choudhary,B.Pharmacy,Ravenbhel
+36,Nusrat Jaan,B.Pharmacy,Ravenbhel
+37,Priyanka yadav,B.Pharmacy,Ravenbhel
+38,Rushil sharma,B.Pharmacy,Ravenbhel
+39,vinay kumar,B.Pharmacy,Ravenbhel
+40,Vishal kumar,B.Pharmacy,Ravenbhel
+41,vishal verma,B.Pharmacy,Ravenbhel
+42,Damanpreet kaur,B.Com,IndiaMart
+43,Anupreet kaur,B.Com,IndiaMart
+44,Harsh,B.Com,IndiaMart
+45,Jumaid farooq,B.Com,Reliance Nippon Limited
+46,Manya Suri,B.Com,Reliance Nippon Limited
+47,Prabhjot kaur,B.Com,Reliance Nippon Limited
+48,Shahid ashraf,B.Com,Reliance Nippon Limited
+49,Ekta,B.Com,Just Dial
+50,Aseem Langeh,B.Com,Just Dial
+51,Palwinder kaur,B.Com,Just Dial
+52,Simrat Kaur,B.Com,Just Dial
+53,Simranpreet kaur,B.Com,Just Dial
+54,Piyusha,B.Com,Just Dial
+55,Ansh,B.Com,Tax Green India Pvt Ltd
+56,Akriti Kumari,B.Sc Agriculture,Baramati Agro
+57,Nihal Kumar,B.Sc Agriculture,Baramati Agro
+58,Shravan kuamr,B.Sc Agriculture,Baramati Agro
+59,Govind Kumar,B.Sc Agriculture,Baramati Agro
+60,Ranbir Singh,B.Sc Agriculture,Baramati Agro
+61,Amrit Raj,B.Sc Agriculture,Baramati Agro
+62,Anuj ranjan,B.Sc Agriculture,Baramati Agro
+63,Laxman Budha,B.Sc Agriculture,Agro Vikas
+64,Priya Priyadarshi,B.Sc Agriculture,Agro Vikas
+65,Akash jain,B.Sc Agriculture,Agro Vikas
+66,Suruchi Kumari,B.Sc Agriculture,Agro Vikas
+67,Sandeep Kumar Chaudhary,B.Sc Agriculture,Agro Vikas
+68,Bittu Kumar,B.Sc Agriculture,Agro Vikas
+69,Luv Kumar,B.Sc Agriculture,Just Agriculture
+70,Nishant Raj,B.Sc Agriculture,Agro Star
+71,Atish Raj,B.Sc Agriculture,Agro Star
+72,Chhotu Kumar,B.Sc Agriculture,Agro Star
+73,Anand Kumar Roy,B.Sc Agriculture,Agro Star
+74,Anuj Kumar,B.Sc Agriculture,Agro Star
+75,Anand Kumar Prasad,B.Sc Agriculture,Agro Star
+76,Abhinav Kuamr Sourabh,B.Sc Agriculture,Agro Star
+77,Sawan kumar,B.Sc FD,Amita Gupta Sustainable
+78,KM Punam Kumari,B.Sc FD,Amita Gupta Sustainable
+79,Ritravya,B.Sc FD,Amita Gupta Sustainable
+80,Nisha,B.Sc FD,Amita Gupta Sustainable
+81,Pawandeep kaur,B.Sc FD,Amita Gupta Sustainable
+82,Anshu kumar,B.Tech AI&ML,Cognizant
+83,Arshpreet singh,B.Tech AI&ML,APP SUCCESSOR
+84,Priyanshu Raj,B.Tech AI&ML,Motherson
+85,Karandeep singh,B.Tech Civil,Everest
+86,Aftab Ahmed,B.Tech Civil,Khanna Paper Mills Ltd
+87,Harihar,B.Tech Civil,Berma
+88,Soham Uprety,B.Tech Civil,Hope Engineering Consultancy
+89,Isha sharma,B.Tech CSE,DeltaX
+90,Jashanpreet singh,B.Tech CSE,DeltaX
+91,Jaskirat Singh,B.Tech CSE,DeltaX
+92,Sonu Jaiswal,B.Tech CSE,DeltaX
+93,Sonu kumar,B.Tech CSE,DeltaX
+94,Sudhanshu kumar,B.Tech CSE,DeltaX
+95,Sweety Sharma,B.Tech CSE,DeltaX
+96,Tannu kumari,B.Tech CSE,DeltaX
+97,vikrant,B.Tech CSE,DeltaX
+98,Arshdeep singh,B.Tech CSE,Sopra Steria
+99,Chaitanya sharma,B.Tech CSE,Sopra Steria
+100,Monika Jaiswal,B.Tech CSE,Sopra Steria
+101,Shahil kumar gupta,B.Tech CSE,Sopra Steria
+102,Tegnoor kaur,B.Tech CSE,Sopra Steria
+103,Yukti kapoor,B.Tech CSE,Sopra Steria
+104,Aadil hasan,B.Tech CSE,75 Way Technologies
+105,Aakash Sharma,B.Tech CSE,75 Way Technologies
+106,Abhilesh kumar roy,B.Tech CSE,75 Way Technologies
+107,Abhinandan kumar,B.Tech CSE,75 Way Technologies
+108,Abhishek kumar,B.Tech CSE,75 Way Technologies
+109,Anish kumar,B.Tech CSE,75 Way Technologies
+110,Anjar hasan,B.Tech CSE,75 Way Technologies
+111,Keshav Kumar Jha,B.Tech CSE,75 Way Technologies
+112,Nisha kumari,B.Tech CSE,75 Way Technologies
+113,Ruksar khatun,B.Tech CSE,75 Way Technologies
+114,Shubham Kumar,B.Tech CSE,75 Way Technologies
+115,Komalpreet kaur,B.Tech CSE,Nagaroo
+116,Navpreet singh,B.Tech CSE,Nagaroo
+117,Nitin nanda,B.Tech CSE,Nagaroo
+118,Palakpreet kaur,B.Tech CSE,Nagaroo
+119,Rajpreet Kaur,B.Tech CSE,Nagaroo
+120,Ramesh kumar yadav,B.Tech CSE,Nagaroo
+121,Rubinder kaur,B.Tech CSE,Nagaroo
+122,Mehak,B.Tech CSE,Brahmastack Technologies Ltd.
+123,Ashish kumar yadav,B.Tech CSE,Cognizant
+124,Gaganpreet Kaur,B.Tech CSE,Cognizant
+125,Harjot Singh,B.Tech CSE,Cognizant
+126,Harshpreet singh,B.Tech CSE,Cognizant
+127,Shubham dixit,B.Tech CSE,Cognizant
+128,Taranpreet kaur,B.Tech CSE,Cognizant
+129,Virat singh,B.Tech CSE,Cognizant
+130,vishal kumar,B.Tech CSE,Cognizant
+131,Vivek rai,B.Tech CSE,Cognizant
+132,yash raj,B.Tech CSE,Cognizant
+133,Anshita kajuria,B.Tech CSE,APP SUCCESSOR
+134,Gurnoor Kaur,B.Tech CSE,APP SUCCESSOR
+135,Shubham,B.Tech CSE,APP SUCCESSOR
+136,Sudhir kumar,B.Tech CSE,APP SUCCESSOR
+137,Vikram kumar,B.Tech CSE,APP SUCCESSOR
+138,vishakha sharma,B.Tech CSE,APP SUCCESSOR
+139,Kulbir singh,B.Tech CSE,ChicMic
+140,Manish kumar jha,B.Tech CSE,ChicMic
+141,Md shahjad alam,B.Tech CSE,ChicMic
+142,Mustufa ansani,B.Tech CSE,ChicMic
+143,Preeti bharti,B.Tech CSE,ChicMic
+144,Ranjan kumar,B.Tech CSE,ChicMic
+145,Sajid rahman,B.Tech CSE,ChicMic
+146,Sandesh kishor,B.Tech CSE,ChicMic
+147,Nitish kumar,B.Tech CSE,APP SUCCESSOR
+148,Aditi mahajan,B.Tech CSE,Lifeworks
+149,Aishwarya sekhri,B.Tech CSE,Lifeworks
+150,Sonam kumari,B.Tech CSE,Lifeworks
+151,Vedant Bhardwaj,B.Tech CSE,Lifeworks
+152,Arjun Sharma,B.Tech CSE,Motherson
+153,Gurleen Kaur,B.Tech CSE,Motherson
+154,Gurpreet Singh,B.Tech CSE,Motherson
+155,Kritin puri,B.Tech CSE,Sopra Steria
+156,Mansi,B.Tech CSE,Sopra Steria
+157,Tashu,B.Tech CSE,Motherson
+158,Sachin kumar ray,B.Tech CSE,Motherson
+159,Shobhit Arora,B.Tech CSE,Sopra Steria
+160,ruksar khatun,B.Tech CSE,Motherson
+161,Smriti arora,B.Tech CSE,Motherson
+162,Vicky kumar,B.Tech CSE,Motherson
+163,Harsimranpreet Kaur,B.Tech CSE,Wipro
+164,Kushal,B.Tech CSE,Wipro
+165,Maanya,B.Tech CSE,Wipro
+166,Pavitar Puneet,B.Tech CSE,Wipro
+167,Dipu kumar gupta,B.Tech CSE,L&G Consultancy
+168,Jasmine,B.Tech CSE,L&G Consultancy
+169,Manorama,B.Tech CSE,L&G Consultancy
+170,Mehak Dhawan,B.Tech CSE,L&G Consultancy
+171,Mehakpreet Kaur,B.Tech CSE,L&G Consultancy
+172,Navdeep Singh,B.Tech CSE,L&G Consultancy
+173,Nitish Mahajan,B.Tech CSE,L&G Consultancy
+174,Shrinu Shrey,B.Tech CSE,L&G Consultancy
+175,Suraj yadav,B.Tech CSE,L&G Consultancy
+176,Aman Kumar Yadav,B.Tech CSE,Ur.Heaven Space Pvt Ltd.
+177,Abhishek Kumar,B.Tech CSE,BHUMU Group
+178,Avi Raj,B.Tech CSE,Dynaclean Industries Pvt.Ltd.
+179,Ankita Kumari,B.Tech CSE,Code Bright
+180,Saloni,B.Tech CSE,Flatworld Healthcare
+181,Nitin Kumar,B.Tech CSE,Senation Solutions
+182,Chirag,B.Tech CSE,Sensation Solution
+183,Amandeep Kaur,B.Tech CSE,Techtreno Solutions Pvt.Ltd.
+184,Purshotam Kumar,B.Tech CSE,Care Health Insurance
+185,Vinayak,B.Tech CSE,Atomic House
+186,Jasmeen Kaur,B.Tech CSE,Onset Technologies
+187,Adarsh Lakhanpal,B.Tech CSE,Scriptbox
+188,Gaganpreet Kaur,B.Tech CSE,Scriptbox
+189,Arjun Sharma,B.Tech CSE,Scriptbox
+190,Amandeep Singh,B.Tech CSE,Kochar Infotech
+191,Amritpal Singh,B.Tech CSE,Kochar Infotech
+192,Snehdeep,B.Tech CSE,KocharTech
+193,Vishu Poddar,B.Tech CSE,Martecko Consulting LLP
+194,Simratpal,B.Tech CSE,O7 Solutions
+195,Shivansh,B.Tech CSE,Sensation Solution
+196,Vanshika,B.Tech CSE,Sensation Solution
+197,Raju Kumar,B.Tech CSE,TS Finserv Private Ltd.
+198,Hritik Kumar,B.Tech CSE,Unicos Infolabs Pvt.Ltd.
+199,Tushar Thakur,B.Tech CSE,Zieglar Byte
+200,Gunkaran Bedi,B.Tech CSE,Value Creatives
+201,Vikrant,B.Tech CSE,Lifeworks
+202,Vishu,B.Tech CSE,Lifeworks
+203,Rohit Kumar,B.Tech CSE,Lifeworks
+204,Parveen Kumar Tiwari,B.Tech EE,Luminous
+205,Aditya,B.Tech EE,Luminous
+206,Ranjodh Singh,B.Tech EE,Luminous
+207,Md Sharukh Khan,B.Tech EE,Luminous
+208,Kawaljit Singh,B.Tech EE,Luminous
+209,Vishal Kumar,B.Tech ME,Venus
+210,Jaisper Singh,B.Tech ME,Singh Industries
+211,Aryan Abrol,B.Tech ME,Precision Stampings
+212,Nitish Kumar,B.Tech ME,Precision Stampings
+213,Sailesh Kumar,B.Tech ME,Precision Stampings
+214,Priya Kangra,B.Voc HCM,Hotel Le Meridien
+215,Gurleen kaur,B.Voc HCM,Hotel Le Meridien
+216,Abhishek kumar,BBA,Planet Spark
+217,Manav,BBA,Planet Spark
+218,Manpreet kaur,BBA,Planet Spark
+219,Rishikesh Kuamr,BBA,Planet Spark
+220,Nitish singh,BBA,Planet Spark
+221,Sneha verma,BBA,Planet Spark
+222,yogesh kumar,BBA,Planet Spark
+223,Yuvraj,BBA,Planet Spark
+224,Pushpa Kumari,BBA,India Mart
+225,Aastik Anand,BBA,Just Dial
+226,Pawani Sharma,BBA,Nitish Cable Network
+227,Satish Kumar,BBA,Silaris Information
+228,Aryan Seth,BBA,Chopra House
+229,Simratpreet Singh,BBA,Maxicus Technologies Ltd.
+230,Veerpratap Singh,BBA,Maxicus Technologies Ltd.
+231,Khushpreet kaur,BBA,Maxicus Technologies Ltd.
+232,Kirandeep kaur,BBA,Maxicus Technologies Ltd.
+233,Shiv Prashad Mukund,BBA,Maxicus Technologies Ltd.
+234,Kumar satyam,BBA,Maxicus Technologies Ltd.
+235,Sneha Verma,BBA,Maxicus Technologies Ltd.
+236,Jasmeet,BBA,Tax Green India Pvt Ltd
+237,Tanish Chopra,BCA,Progressive Packaging
+238,Manpreet Kaur,BCA,Agilsys
+239,Sehajdeep kaur,BCA,Wipro
+240,Simarpreet Singh,BCA,Coding Ninjas
+241,Gurwinder singh,BCA,Reliance Nippon Limited
+242,Karan kr sharma,BCA,Reliance Nippon Limited
+243,Priyanshu raj,BCA,Reliance Nippon Limited
+244,Purshottam joshi,BCA,Reliance Nippon Limited
+245,Rajveer,BCA,Reliance Nippon Limited
+246,Nirankar Singh,BCA,Reliance Nippon Limited
+247,Vanisha,BCA,Reliance Nippon Limited
+248,Sukhraj Singh,BCA,SVL Agro Chemicals
+249,Aryan Verma,BCA,Gapple Solutions
+250,Mansi Sarna,BCA,Axtrics Solution
+251,Shreyansh,BCA,Kiscon Hospitality
+252,Abhinav Kumar,BCA,Ganga Koshi Public School
+253,Ghanishtha Kapoor,BCA,Kapil Kumar& Co
+254,Dharmpreet singh,BCA,TCS
+255,Meraj ansari,BCA,TCS
+256,Pawandeep kaur,BCA,TCS
+257,Queen Kaur,BCA,TCS
+258,Radhika,BCA,TCS
+259,Ranbir singh,BCA,TCS
+260,Sintu kumar,BCA,TCS
+261,Vipan kumar,BCA,TCS
+262,Charanpreet Singh,BCA,TCS
+263,Milky Rani,BCA,TCS
+264,Vardan Aggarwal,BCA,TCS
+265,Manas Kumar,BCA,360 Global
+266,Manpreet Kaur,BCA,BigBasket
+267,Aditya Mishra,BCA,Cogent
+268,Rahul Kumar Shah,BCA,Diamond Glass House
+269,Armandeep Singh,BCA,Majha Collection
+270,Harshit Handa,BCA,Maxicus Technologies Ltd.
+271,Kunal Sharma,BCA,Maxicus Technologies Ltd.
+272,Aman Prasad,BCA,Maxicus Technologies Ltd.
+273,Praney Sanjay Kashid,BCA,Maxicus Technologies Ltd.
+274,Avi Sharma,BCA,Maxicus Technologies Ltd.
+275,Anshpreet Singh,BCA,Panvik Pharmaceuticals
+276,Sumit Singh,BCA,Red Stone Consulting
+277,Rahul Kumar Yadav,BCA,Red Stone Consulting
+278,Ankit Raj,BCA,Ambrelanexus
+279,Gaurav kumar,BCA,Net Web Technologies
+280,Harjot kaur,BCA,Net Web Technologies
+281,Harwinder singh,BCA,Net Web Technologies
+282,Jyotika,BCA,Net Web Technologies
+283,Ramandeep kaur,BCA,Net Web Technologies
+284,Romanpreet kaur,BCA,Net Web Technologies
+285,Sneha sapra,BCA,Net Web Technologies
+286,Snehdeep singh,BCA,Net Web Technologies
+287,Durgesh Prasad Kurmi,BCA,Monzadv
+288,Rakib Anwar,BCA,Monzadv
+289,Harshpreet Singh,BCA,Amrit Medical Store
+290,Gulshan,BCA,Eventory
+291,Rohit Gupta,BCA,Eventory
+292,Abhisekh Kumar,BCA,Kochar Infotech
+293,Honey Bhatia,BCA,Quad Leone
+294,Namrata Raj,BCA,Tender Plus Business Consulting Pvt.Ltd.
+295,Sahildeep Singh,BHMCT,Hard Rock Hotel
+296,Dhairaya Vashisht,BHMCT,The Grand Hotel New Delhi
+297,Sunny Kumar,BHMCT,The Grand Hotel New Delhi
+298,Harsh Raj,BHMCT,The Oberoi
+299,Anubha kumar,BHMCT,ITC Windsor Bangaluru
+300,Arpit duggal,BHMCT,ITC Windsor Bangaluru
+301,Gurdev singh,BHMCT,ITC Windsor Bangaluru
+302,Gurkirat singh bedi,BHMCT,ITC Windsor Bangaluru
+303,Rohit,BHMCT,ITC Windsor Bangaluru
+304,Sadhvi mehta,BHMCT,ITC Windsor Bangaluru
+305,Rohit Bhatt,BHMCT,ITC Windsor Bangaluru
+306,Masoom,BHMCT,Hyatt Place Bharuch
+307,Ashish Kumar Choursiya,BHMCT,Radisson Blu Nagpur
+308,Suryajeet Kumar,BHMCT,The Park Hyderabad
+309,Mr.Naidu,BHMCT,Radisson Blu MBD
+310,Ravi Kumar,BHMCT,The Leela Gujarat
+311,Ekta,BHMCT,Radisson Blu Indore
+312,Akshay Kumar,BHMCT,Radisson Blu Amritsar
+313,Jatan,BHMCT,Radisson Blu Amritsar
+314,Jaskirat,BHMCT,Indo Thai
+315,Tawseef Rashid,BHMCT,Arco Hotel & Resort
+316,Gurwinder Singh,BHMCT,ITC Hotel
+317,Gunjan,MBA,DMART
+318,Khushi,MBA,DMART
+319,Kiranjit Kaur,MBA,DMART
+320,Prabhnoor Kaur,MBA,DMART
+321,Samranjeet Kaur,MBA,DMART
+322,Suchi Adhi,MBA,DMART
+323,Nitish Kumar,MBA,PAYTM Services
+324,Danish Sharma,MBA,India Mart
+325,Abhishek Puri,MBA,Reliance Nippon Limited
+326,Yukta,MBA,Reliance Nippon Limited
+327,Gigyasha,MBA,Flipkart
+328,Divya arora,MBA,Just Dial
+329,Jagdeep kaur,MBA,Just Dial
+330,Shubham Kumar,MBA,BEVARC
+331,Suraj Kumar Gupta,MBA,BEVARC
+332,Shankar Kumar Ray,MBA,L&T Financial Service
+333,Nitish Kumar Das,MBA,SV Creditline Ltd.
+334,Alok Chandra,MBA,Airtel
+335,Khushi,MBA,Zippee
+336,Navneet Kaur,MBA,MKR Techsoft Private Ltd.
+337,Birinder kaur,MCA,CVENT
+338,Gurpreet kaur,MCA,CVENT
+339,Harleen kaur,MCA,CVENT
+340,Harmandeep kaur,MCA,CVENT
+341,Kashish,MCA,CVENT
+342,Uma,MCA,CVENT
+343,Aman kumar,MCA,Wipro
+344,Aman singh pathania,MCA,Wipro
+345,Gurpreet Singh,MCA,Wipro
+346,Mandeep singh,MCA,Wipro
+347,kanika,MCA,Wipro
+348,Naveen kumar,MCA,Wipro
+349,Simarpreet singh,MCA,Wipro
+350,Devashish Kumar,MCA,Informage Techno Solutions Pvt Ltd

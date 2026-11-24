@@ -7,6 +7,7 @@ that describe them to the LLM (Ollama tool-calling format).
 import json
 import os
 import difflib
+from collections import Counter
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "structured")
 CSV_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "raw", "csvs")
@@ -30,6 +31,10 @@ def _load_csv(filename):
 COURSE_ALIASES = {
     "cse": ["computer science"],
     "cs": ["computer science"],
+    "ce": ["civil engineering"],
+    "coe": ["computer engineering"],
+    "CoE": ["computer engineering"],
+    "ME": ["Mechanical engineering"],
     "it": ["information technology"],
     "ece": ["electronics"],
     "eee": ["electrical"],
@@ -102,22 +107,91 @@ def get_hostel_info():
     return _load("hostel_facilities.json")
 
 
-def get_placement_stats(course_id: str = None, course_name: str = None):
-    data = _load("placements.json")
+def get_placement_stats(course_name: str = None):
+    """
+    Reads the real 2024-25 placement drive data (placements.csv: Student Name,
+    Branch, Company Name) and returns aggregate stats for a branch - how many
+    students were placed and which companies recruited from that branch.
+    Individual student names are NOT exposed to students asking about placements;
+    only counts and company names are returned.
+    """
+    rows = _load_csv("placements.csv")
+    if isinstance(rows, dict) and "error" in rows:
+        return rows
 
-    if course_name and not course_id:
-        course_matches = get_course_info(course_name)
-        if isinstance(course_matches, dict) and "error" in course_matches:
-            return {"error": f"No course found matching '{course_name}'"}
-        # placements.json is still sample data keyed by old course_id values;
-        # note this for whoever fills in real placement data later.
-        return {"note": "Real placement data not yet loaded for this course. Add it to data/structured/placements.json or a placements.csv.", "matched_course": course_matches[0] if isinstance(course_matches, list) else course_matches}
+    if not course_name:
+        # Overall summary across every branch, for "how many students got placed
+        # overall" type questions.
+        branch_counts = Counter(row.get("Branch", "").strip() for row in rows if row.get("Branch", "").strip())
+        total_placed = len(rows)
+        display_lines = [f"In the 2024-25 placement drive, {total_placed} students were placed "
+                          f"across {len(branch_counts)} branches:"]
+        for branch, count in sorted(branch_counts.items(), key=lambda x: -x[1]):
+            display_lines.append(f"- {branch}: {count} students placed")
+        return {
+            "academic_year": "2024-25",
+            "total_students_placed": total_placed,
+            "placed_by_branch": dict(branch_counts),
+            "display_text": "\n".join(display_lines),
+        }
 
-    if not course_id:
-        return data
+    query = course_name.lower().strip()
+    for prefix in ["b.tech", "btech", "m.tech", "mtech"]:
+        query = query.replace(prefix, "").strip()
 
-    matches = [p for p in data.get("placements", []) if p.get("course_id") == course_id]
-    return matches if matches else {"error": f"No placement data found for course '{course_id}'"}
+    search_terms = [query]
+    for abbr, expansions in COURSE_ALIASES.items():
+        if abbr == query or f" {abbr}" in f" {query}":
+            search_terms.extend(expansions)
+
+    unique_branches = sorted(set(row.get("Branch", "").strip() for row in rows if row.get("Branch", "").strip()))
+
+    matched_branch = None
+    for branch in unique_branches:
+        branch_lower = branch.lower()
+        for term in search_terms:
+            if term and (term in branch_lower or branch_lower in term):
+                matched_branch = branch
+                break
+        if matched_branch:
+            break
+
+    # Fallback: fuzzy match against the real branch names (catches typos/phrasing).
+    # Cutoff is higher than the course-name fuzzy match (0.4) because branch
+    # names here are short (e.g. "B.Tech Civil") - a loose cutoff would falsely
+    # match a made-up/unrelated branch to a real one and report wrong data.
+    if not matched_branch:
+        close = difflib.get_close_matches(course_name, unique_branches, n=1, cutoff=0.6)
+        if close:
+            matched_branch = close[0]
+
+    if not matched_branch:
+        return {"error": f"No placement data found for branch matching '{course_name}'"}
+
+    branch_rows = [r for r in rows if r.get("Branch", "").strip() == matched_branch]
+    company_counts = Counter(r.get("Company Name", "").strip() for r in branch_rows if r.get("Company Name", "").strip())
+    total_placed = len(branch_rows)
+    top_companies = company_counts.most_common(10)
+
+    display_lines = [
+        f"In the 2024-25 placement drive, {total_placed} {matched_branch} students were placed "
+        f"across {len(company_counts)} companies."
+    ]
+    display_lines.append("Top recruiting companies:")
+    for company, count in top_companies:
+        display_lines.append(f"- {company}: {count} student{'s' if count != 1 else ''}")
+    if len(company_counts) > 10:
+        display_lines.append(f"...and {len(company_counts) - 10} more companies.")
+    display_text = "\n".join(display_lines)
+
+    return {
+        "branch": matched_branch,
+        "academic_year": "2024-25",
+        "total_students_placed": total_placed,
+        "number_of_companies": len(company_counts),
+        "companies": dict(company_counts),
+        "display_text": display_text,
+    }
 
 
 def search_faq(keyword: str):
@@ -528,12 +602,11 @@ TOOL_SCHEMAS = [
         "type": "function",
         "function": {
             "name": "get_placement_stats",
-            "description": "Get placement statistics for a course. Prefer passing course_name (e.g. 'B.Tech CSE') since that's what students say - the tool resolves it to the internal course_id automatically.",
+            "description": "Get real 2024-25 placement drive stats for a branch: how many students were placed and the top recruiting companies. Pass course_name as the student said it (e.g. 'B.Tech CSE', 'BCA', 'MBA'). Omit course_name for an overall summary across all branches. This is the authoritative placement source - never guess placement numbers or company names yourself. Returns a ready-formatted 'display_text' - output it directly.",
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "course_name": {"type": "string", "description": "Course name as the student would say it"},
-                    "course_id": {"type": "string", "description": "Internal course_id if already known"}
+                    "course_name": {"type": "string", "description": "Branch/course name as the student would say it, e.g. 'B.Tech CSE', 'BCA', 'MBA'. Omit for an overall summary."}
                 },
                 "required": []
             }

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGC Admission — Counsellor Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#7A1B35; --ink-deep:#14171F; --bg:#F4F3EC; --card:#FFFFFF;
+    --muted:#6B7280; --border:#E6DFCC; --ok:#1E7A46; --ok-bg:#E7F5EC;
+    --warm:#B4720E; --warm-bg:#FBEED9; --cold:#3B5B8C; --cold-bg:#E4EAF3; --hot:#B4231F;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink-deep);}
+  header{
+    background:linear-gradient(120deg,var(--ink) 0%,var(--ink-deep) 100%);
+    color:#fff;padding:22px 28px;
+  }
+  header h1{font-family:'Fraunces',serif;font-size:22px;margin:0 0 4px;}
+  header p{margin:0;font-size:13px;color:#E3D7DB;}
+  .live{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#E3D7DB;margin-top:8px;}
+  .dot{width:8px;height:8px;border-radius:50%;background:#4ADE80;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  main{max-width:1150px;margin:0 auto;padding:22px 20px 60px;}
+
+  #gate{max-width:380px;margin:90px auto;background:var(--card);border:1px solid var(--border);
+        border-radius:14px;padding:30px;text-align:center;}
+  #gate h2{font-family:'Fraunces',serif;margin:0 0 6px;}
+  #gate p{color:var(--muted);font-size:13px;margin:0 0 18px;}
+  #gate input{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;}
+  #gate input:focus{outline:none;border-color:var(--ink);}
+  .btn{background:var(--ink);color:#fff;border:0;border-radius:8px;padding:10px 18px;
+       font-weight:600;font-size:14px;cursor:pointer;margin-top:12px;width:100%;font-family:'Inter',sans-serif;}
+  #gate-error{color:var(--hot);font-size:12.5px;margin-top:10px;min-height:16px;}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px;}
+  .stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;}
+  .stat .num{font-family:'Fraunces',serif;font-size:28px;font-weight:600;color:var(--ink);}
+  .stat .lbl{font-size:12px;color:var(--muted);}
+  .table-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;min-width:900px;}
+  th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
+     padding:12px 14px;border-bottom:1px solid var(--border);white-space:nowrap;}
+  td{padding:12px 14px;border-top:1px solid var(--border);font-size:13px;vertical-align:top;}
+  td.name{font-weight:600;}
+  td a{color:var(--ink);text-decoration:none;}
+  td .sub{font-size:11.5px;color:var(--muted);margin-top:2px;}
+  tr.fresh{animation:flash 4s ease-out;}
+  @keyframes flash{0%{background:#FFF3C4}100%{background:transparent}}
+  select.status{padding:6px 8px;border-radius:8px;border:1.5px solid var(--border);font-size:12.5px;
+                font-family:'Inter',sans-serif;font-weight:600;background:#fff;}
+  select.status[data-s="New"]{background:var(--warm-bg);color:var(--warm);}
+  select.status[data-s="Contacted"]{background:var(--cold-bg);color:var(--cold);}
+  select.status[data-s="Reported"]{background:#EDE7F6;color:#5B3E96;}
+  select.status[data-s="Admitted"]{background:var(--ok-bg);color:var(--ok);}
+  .brief{margin-top:6px;font-size:11.5px;font-weight:400;color:var(--muted);line-height:1.5;max-width:430px;}
+  .brief div{margin-bottom:2px;}
+  .brief .muted{font-style:italic;}
+  button.mini{margin-top:4px;background:transparent;border:1px solid var(--border);border-radius:6px;
+              padding:3px 8px;font-size:11px;color:var(--ink);cursor:pointer;font-family:'Inter',sans-serif;}
+  button.mini:disabled{opacity:.6;cursor:default;}
+  .empty{padding:40px;text-align:center;color:var(--muted);font-size:14px;}
+  #toast{position:fixed;right:18px;bottom:18px;background:var(--ink-deep);color:#fff;padding:12px 16px;
+         border-radius:10px;font-size:13px;display:none;box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:50;}
+  @media (max-width:640px){header{padding:18px;} main{padding:16px 12px 50px;}}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <h2>Counsellor Login</h2>
+  <p>Enter the access key given to you by the admission office.</p>
+  <input id="key-input" type="password" placeholder="Access key" autocomplete="off">
+  <button class="btn" id="key-btn">Open My Dashboard</button>
+  <div id="gate-error"></div>
+</div>
+
+<div id="app" style="display:none;">
+  <header>
+    <h1 id="c-name">Counsellor</h1>
+    <p id="c-contact"></p>
+    <div class="live"><span class="dot"></span><span id="updated">Live - updates automatically</span></div>
+  </header>
+  <main>
+    <div class="stats">
+      <div class="stat"><div class="num" id="s-total">0</div><div class="lbl">Total assigned</div></div>
+      <div class="stat"><div class="num" id="s-new">0</div><div class="lbl">New (not contacted)</div></div>
+      <div class="stat"><div class="num" id="s-contacted">0</div><div class="lbl">Contacted</div></div>
+      <div class="stat"><div class="num" id="s-admitted">0</div><div class="lbl">Admitted</div></div>
+    </div>
+    <div class="table-wrap"><div id="table-container"></div></div>
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  const API_BASE = "http://localhost:8000";
+  const POLL_MS = 15000;
+  let accessKey = sessionStorage.getItem('counsellorKey') || "";
+  let knownIds = null;      // null until the first load, so we don't toast on login
+  let knownSlots = null;    // id -> meeting_time, to alert when a student books/reschedules
+  let statuses = ["New", "Contacted", "Reported", "Admitted"];
+  let pollTimer = null;
+
+  const $ = id => document.getElementById(id);
+  function esc(v){ const d=document.createElement('div'); d.textContent = v == null ? '' : String(v); return d.innerHTML; }
+  function fmt(iso){
+    if(!iso) return '-';
+    const d = new Date(iso);
+    return d.toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+  }
+
+  async function api(path, opts = {}) {
+    const res = await fetch(`${API_BASE}${path}`, {
+      ...opts,
+      headers: { 'Content-Type': 'application/json', 'x-counsellor-key': accessKey, ...(opts.headers || {}) },
+    });
+    if (res.status === 401) throw new Error('unauthorized');
+    if (!res.ok) throw new Error('server error');
+    return res.json();
+  }
+
+  function toast(msg){
+    const t = $('toast'); t.textContent = msg; t.style.display = 'block';
+    clearTimeout(toast._t); toast._t = setTimeout(() => t.style.display = 'none', 5000);
+  }
+
+  function briefHtml(r) {
+    const lines = (r.brief || '').split('\n').filter(Boolean);
+    const body = lines.length
+      ? lines.map(l => `<div>${esc(l)}</div>`).join('')
+      : '<div class="muted">Brief is being prepared...</div>';
+    return `<div class="brief">${body}<button class="mini" data-brief="${r.id}">${lines.length ? 'Refresh brief' : 'Generate brief'}</button></div>`;
+  }
+
+  async function onBriefRefresh(e) {
+    const btn = e.target;
+    btn.disabled = true; btn.textContent = 'Generating...';
+    try {
+      await api(`/counsellor/assignments/${btn.dataset.brief}/brief`, { method: 'POST' });
+      await refresh();
+    } catch (err) {
+      toast('Could not refresh the brief - please try again');
+      btn.disabled = false; btn.textContent = 'Refresh brief';
+    }
+  }
+
+  function render(payload) {
+    const c = payload.counsellor, rows = payload.assignments;
+    statuses = payload.statuses || statuses;
+    $('c-name').textContent = c.name;
+    $('c-contact').textContent = `${c.mobile}  |  ${c.email}`;
+
+    const count = s => rows.filter(r => (r.status || 'New') === s).length;
+    $('s-total').textContent = rows.length;
+    $('s-new').textContent = count('New');
+    $('s-contacted').textContent = count('Contacted');
+    $('s-admitted').textContent = count('Admitted');
+
+    const currentIds = new Set(rows.map(r => r.id));
+    const fresh = knownIds ? rows.filter(r => !knownIds.has(r.id)) : [];
+    const notes = [];
+    if (fresh.length) notes.push(`${fresh.length} new student${fresh.length > 1 ? 's' : ''} assigned to you`);
+    if (knownSlots) {
+      rows.forEach(r => {
+        if (!knownSlots.has(r.id) || !r.meeting_time) return;
+        const before = knownSlots.get(r.id);
+        if (before !== r.meeting_time) {
+          notes.push(before ? `${r.student_name} rescheduled to ${r.meeting_time}` : `${r.student_name} booked ${r.meeting_time}`);
+        }
+      });
+    }
+    if (notes.length) toast(notes.join('  |  '));
+    const freshIds = new Set(fresh.map(r => r.id));
+    knownIds = currentIds;
+    knownSlots = new Map(rows.map(r => [r.id, r.meeting_time || '']));
+
+    if (!rows.length) {
+      $('table-container').innerHTML = '<div class="empty">No students assigned yet. New students will appear here automatically.</div>';
+    } else {
+      $('table-container').innerHTML = `<table><thead><tr>
+        <th>Student</th><th>Course</th><th>Mobile</th><th>Email</th><th>Source</th><th>Counselling Slot</th><th>Assigned</th><th>Status</th>
+      </tr></thead><tbody>${rows.map(r => `
+        <tr class="${freshIds.has(r.id) ? 'fresh' : ''}">
+          <td class="name">${esc(r.student_name)}${briefHtml(r)}</td>
+          <td>${esc(r.course)}</td>
+          <td><a href="tel:${esc(r.student_mobile)}">${esc(r.student_mobile)}</a></td>
+          <td><a href="mailto:${esc(r.student_email)}">${esc(r.student_email)}</a></td>
+          <td>${r.source === 'nest' ? 'AGC NEST' : 'Admission Inquiry'}</td>
+          <td>${esc(r.meeting_time || '-')}</td>
+          <td>${fmt(r.created_at)}</td>
+          <td><select class="status" data-id="${r.id}" data-s="${esc(r.status || 'New')}">
+            ${statuses.map(s => `<option value="${s}" ${s === (r.status || 'New') ? 'selected' : ''}>${s}</option>`).join('')}
+          </select></td>
+        </tr>`).join('')}</tbody></table>`;
+      document.querySelectorAll('select.status').forEach(sel => sel.addEventListener('change', onStatusChange));
+      document.querySelectorAll('button[data-brief]').forEach(b => b.addEventListener('click', onBriefRefresh));
+    }
+    $('updated').textContent = 'Live - last updated ' + new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  }
+
+  async function onStatusChange(e) {
+    const sel = e.target;
+    const prev = sel.dataset.s;
+    sel.disabled = true;
+    try {
+      await api(`/counsellor/assignments/${sel.dataset.id}/status`, { method: 'POST', body: JSON.stringify({ status: sel.value }) });
+      sel.dataset.s = sel.value;
+      await refresh();
+    } catch (err) {
+      sel.value = prev;
+      toast('Could not update status - please try again');
+    } finally { sel.disabled = false; }
+  }
+
+  async function refresh() {
+    try {
+      const payload = await api('/counsellor/me');
+      const active = document.activeElement;
+      if (active && active.classList && active.classList.contains('status')) return;   // don't close an open dropdown
+      render(payload);
+    }
+    catch (err) {
+      if (err.message === 'unauthorized') { logout('Invalid or inactive access key.'); }
+      else { $('updated').textContent = 'Connection problem - retrying...'; }
+    }
+  }
+
+  function logout(msg) {
+    clearInterval(pollTimer);
+    sessionStorage.removeItem('counsellorKey');
+    accessKey = ""; knownIds = null; knownSlots = null;
+    $('app').style.display = 'none';
+    $('gate').style.display = 'block';
+    $('gate-error').textContent = msg || '';
+  }
+
+  async function start() {
+    try {
+      render(await api('/counsellor/me'));
+      sessionStorage.setItem('counsellorKey', accessKey);
+      $('gate').style.display = 'none';
+      $('app').style.display = 'block';
+      clearInterval(pollTimer);
+      pollTimer = setInterval(refresh, POLL_MS);
+    } catch (err) {
+      logout(err.message === 'unauthorized' ? 'Invalid or inactive access key.' : 'Cannot reach the server. Is the backend running?');
+    }
+  }
+
+  $('key-btn').addEventListener('click', () => { accessKey = $('key-input').value.trim(); if (accessKey) start(); });
+  $('key-input').addEventListener('keydown', e => { if (e.key === 'Enter') $('key-btn').click(); });
+  if (accessKey) start();
+</script>
+</body>
+</html>

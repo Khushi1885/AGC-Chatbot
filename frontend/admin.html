@@ -3,168 +3,531 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AGC Admission - Leads Dashboard</title>
+<title>AGC Admission — Command Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#7A1B35;
     --ink-deep:#14171F;
     --gold:#A81F3D;
     --paper:#F7F2E7;
+    --card:#FFFFFF;
     --charcoal:#2B2622;
     --muted:#6B7280;
     --border:#E6DFCC;
-    --row-hover:#F4EEDF;
+    --row-hover:#FBF8F0;
+    --hot:#B4231F;
+    --hot-bg:#FBE4E2;
+    --warm:#B4720E;
+    --warm-bg:#FBEED9;
+    --cold:#3B5B8C;
+    --cold-bg:#E4EAF3;
   }
   *{box-sizing:border-box;}
-  body{
-    margin:0;
-    font-family:'Inter',sans-serif;
-    background:var(--paper);
-    color:var(--charcoal);
-    min-height:100vh;
-  }
+ html{
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:var(--paper);
+  color:var(--charcoal);
+  min-height:100vh;
+  overflow-x:hidden;
+  overflow-y:auto;
+}
+
   header{
-    background:linear-gradient(135deg,var(--ink) 0%,var(--ink-deep) 100%);
+    background:linear-gradient(120deg,var(--ink) 0%,var(--ink-deep) 100%);
     color:#fff;
-    padding:28px 32px;
+    padding:26px 32px 30px;
+  }
+  header .title-row{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
   }
   header h1{
     font-family:'Fraunces',serif;
-    font-size:22px;
-    margin:0 0 4px 0;
+    font-size:23px;
+    margin:0;
+    font-weight:600;
+  }
+  header .badge{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.25);
+    padding:3px 9px;
+    border-radius:20px;
   }
   header p{
-    margin:0;
-    color:#C9C4B0;
+    margin:6px 0 0;
+    color:#D9CDD3;
     font-size:13px;
   }
 
   main{
-    max-width:1000px;
+    max-width:1180px;
     margin:0 auto;
-    padding:28px 24px 60px;
+    padding:0 24px 60px;
   }
 
+  /* ---- Auth gate ---- */
   #gate{
-    max-width:360px;
-    margin:80px auto;
-    background:#fff;
+    max-width:380px;
+    margin:90px auto;
+    background:var(--card);
     border:1px solid var(--border);
     border-radius:14px;
-    padding:28px;
+    padding:32px;
     text-align:center;
+    box-shadow:0 20px 45px rgba(20,23,31,0.08);
+  }
+  #gate .icon{
+    width:44px;height:44px;
+    border-radius:50%;
+    background:var(--ink);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 16px;
+    font-size:18px;
   }
   #gate h2{
     font-family:'Fraunces',serif;
-    font-size:18px;
+    font-size:19px;
     margin:0 0 6px;
   }
-  #gate p{color:var(--muted);font-size:13px;margin:0 0 18px;}
+  #gate p{color:var(--muted);font-size:13px;margin:0 0 20px;}
   #gate input{
     width:100%;
-    padding:10px 14px;
-    border-radius:10px;
-    border:1px solid var(--border);
+    padding:11px 14px;
+    border-radius:9px;
+    border:1.5px solid var(--border);
     font-size:14px;
     margin-bottom:12px;
     font-family:'Inter',sans-serif;
   }
-  #gate button, #refresh-btn{
-    background:var(--gold);
-    color:var(--ink-deep);
+  #gate input:focus{outline:none;border-color:var(--ink);}
+  #gate button, .btn{
+    background:var(--ink);
+    color:#fff;
     border:none;
-    padding:10px 20px;
-    border-radius:10px;
+    padding:11px 22px;
+    border-radius:9px;
     font-weight:600;
     font-size:13.5px;
     cursor:pointer;
     font-family:'Inter',sans-serif;
+    transition:opacity .15s;
   }
-  #gate-error{color:#B4453E;font-size:12.5px;margin-top:8px;min-height:16px;}
+  #gate button:hover, .btn:hover{opacity:.9;}
+  #gate-error{color:var(--hot);font-size:12.5px;margin-top:10px;min-height:16px;}
 
-  #dashboard{display:none;}
+  /* ---- Dashboard ---- */
+  #dashboard{display:none;padding-top:24px;}
+
+  .stats-row{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:14px;
+    margin-bottom:24px;
+  }
+  .stat-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+  }
+  .stat-card .num{
+    font-family:'Fraunces',serif;
+    font-size:28px;
+    font-weight:600;
+    color:var(--ink);
+    line-height:1;
+  }
+  .stat-card .label{
+    font-size:11.5px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    margin-top:6px;
+  }
+  .stat-card.hot .num{color:var(--hot);}
 
   .toolbar{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:16px;
+    margin-bottom:14px;
+    gap:12px;
+    flex-wrap:wrap;
   }
-  .toolbar .count{
-    font-size:13.5px;
-    color:var(--muted);
-  }
-  .toolbar .count strong{color:var(--ink);}
-
-  table{
-    width:100%;
-    border-collapse:collapse;
-    background:#fff;
-    border-radius:14px;
-    overflow:hidden;
+  .tabs{
+    display:flex;
+    gap:4px;
+    background:var(--card);
     border:1px solid var(--border);
+    border-radius:10px;
+    padding:4px;
   }
-  thead tr{background:#F1ECDD;}
+  .tab-btn{
+    border:none;
+    background:transparent;
+    padding:8px 16px;
+    border-radius:7px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--muted);
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+    display:flex;align-items:center;gap:6px;
+  }
+  .tab-btn.active{background:var(--ink);color:#fff;}
+  .tab-btn .count{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    opacity:.85;
+  }
+
+  .right-tools{display:flex;gap:8px;align-items:center;}
+  #search-input{
+    padding:8px 13px;
+    border-radius:8px;
+    border:1.5px solid var(--border);
+    font-size:13px;
+    font-family:'Inter',sans-serif;
+    width:200px;
+  }
+  #search-input:focus{outline:none;border-color:var(--ink);}
+  #refresh-btn{padding:8px 16px;font-size:13px;}
+
+  .table-wrap{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow-x:auto;
+  overflow-y:visible;
+  -webkit-overflow-scrolling:touch;
+}
+  table{width:100%;border-collapse:collapse;}
+  thead tr{background:#F4EFE2;}
   th{
     text-align:left;
-    padding:12px 16px;
-    font-size:11.5px;
+    padding:11px 16px;
+    font-size:10.5px;
     text-transform:uppercase;
-    letter-spacing:.4px;
+    letter-spacing:.05em;
     color:var(--muted);
-    font-weight:600;
+    font-weight:700;
+    white-space:nowrap;
   }
   td{
-    padding:13px 16px;
-    font-size:13.5px;
+    padding:12px 16px;
+    font-size:13px;
     border-top:1px solid var(--border);
+    white-space:nowrap;
   }
   tbody tr:hover{background:var(--row-hover);}
-  td.name{font-weight:600;color:var(--ink);}
-  td.mobile a, td.email a{color:var(--ink);text-decoration:none;}
-  td.mobile a:hover, td.email a:hover{color:var(--gold);}
-  td.time{color:var(--muted);font-size:12.5px;}
+  td.name{font-weight:600;color:var(--ink-deep);}
+  td.mono{font-family:'JetBrains Mono',monospace;font-size:12px;}
+  td a{color:var(--ink);text-decoration:none;}
+  td a:hover{text-decoration:underline;}
+  td.time{color:var(--muted);font-size:12px;}
+
+  .lead-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:3px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+  }
+  .lead-badge.hot{background:var(--hot-bg);color:var(--hot);}
+  .lead-badge.warm{background:var(--warm-bg);color:var(--warm);}
+  .lead-badge.cold{background:var(--cold-bg);color:var(--cold);}
+  .lead-badge .dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+
+  .score-bar-wrap{display:flex;align-items:center;gap:8px;}
+  .score-bar{
+    width:60px;height:6px;border-radius:4px;
+    background:var(--border);
+    overflow:hidden;
+  }
+  .score-bar-fill{height:100%;border-radius:4px;}
+  .score-num{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted);}
 
   #empty-state{
     text-align:center;
-    padding:60px 20px;
+    padding:70px 20px;
     color:var(--muted);
     font-size:14px;
+  }
+  #empty-state .big{font-size:32px;margin-bottom:10px;}
+
+  @media (max-width:640px){
+    td, th{padding:9px 10px;font-size:12px;}
+    #search-input{width:130px;}
+  }
+
+  /* ---- Floating Admission Agent chat ---- */
+  .ask-card{display:none;}
+  .chat-launcher{
+    position:fixed;right:24px;bottom:22px;z-index:120;
+    width:60px;height:60px;border:0;border-radius:50%;
+    background:var(--ink);color:#fff;cursor:pointer;
+    box-shadow:0 8px 26px rgba(20,23,31,.25);
+    display:none;align-items:center;justify-content:center;
+    transition:transform .18s,box-shadow .18s;
+  }
+  .chat-launcher:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(20,23,31,.3);}
+  .chat-launcher svg{width:28px;height:28px;}
+  .chat-launcher .chat-dot{
+    position:absolute;top:2px;right:2px;width:13px;height:13px;
+    background:#35A66B;border:2px solid #fff;border-radius:50%;
+  }
+  .chat-panel{
+    display:none;position:fixed;right:24px;bottom:94px;z-index:120;
+    width:min(420px,calc(100vw - 28px));height:min(590px,calc(100vh - 125px));
+    min-height:360px;background:var(--card);border:1px solid var(--border);
+    border-radius:16px;overflow:hidden;box-shadow:0 18px 55px rgba(20,23,31,.25);
+    flex-direction:column;
+  }
+  .chat-panel.open{display:flex;}
+  .chat-header{
+    padding:15px 16px;background:linear-gradient(120deg,var(--ink) 0%,var(--ink-deep) 100%);
+    color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+  .chat-heading{display:flex;align-items:center;gap:10px;min-width:0;}
+  .chat-avatar{width:38px;height:38px;flex:0 0 38px;border-radius:50%;background:#fff;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;font-size:20px;}
+  .chat-heading strong{display:block;font-size:14px;}
+  .chat-heading small{display:block;color:#E8DCE1;font-size:11px;margin-top:3px;}
+  .chat-close{border:0;background:rgba(255,255,255,.13);color:#fff;border-radius:8px;
+    width:34px;height:34px;font-size:22px;cursor:pointer;line-height:1;}
+  .chat-body{padding:15px;overflow-y:auto;flex:1;background:#FCFAF5;}
+  .chat-welcome{background:#fff;border:1px solid var(--border);border-radius:12px 12px 12px 3px;
+    padding:12px;font-size:13px;line-height:1.55;margin-bottom:12px;}
+  .chat-chips{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 14px;}
+  .chat-chips button{background:#fff;border:1px solid var(--border);border-radius:18px;padding:7px 10px;
+    font-size:11px;color:var(--charcoal);cursor:pointer;font-family:'Inter',sans-serif;text-align:left;}
+  .chat-chips button:hover{border-color:var(--ink);color:var(--ink);}
+  .chat-message{padding:11px 12px;border-radius:12px;margin:10px 0;font-size:13px;line-height:1.55;
+    overflow-wrap:anywhere;}
+  .chat-message.user{background:var(--ink);color:#fff;margin-left:35px;border-bottom-right-radius:3px;white-space:pre-wrap;}
+  .chat-message.bot{background:#fff;border:1px solid var(--border);margin-right:18px;border-bottom-left-radius:3px;}
+  .chat-message .ask-meta{font-size:10.5px;color:var(--muted);margin-top:8px;}
+  .chat-message table{width:100%;border-collapse:collapse;margin-top:10px;min-width:560px;}
+  .chat-table-wrap{overflow-x:auto;}
+  .chat-message th{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:left;padding:6px;border-bottom:1px solid var(--border);}
+  .chat-message td{padding:7px 6px;border-top:1px solid var(--border);font-size:11.5px;white-space:normal;}
+  .chat-compose{padding:12px;border-top:1px solid var(--border);background:#fff;}
+  .chat-input-row{display:flex;gap:8px;align-items:center;}
+  #ask-input{width:100%;min-width:0;padding:11px 12px;border:1.5px solid var(--border);border-radius:10px;
+    font-size:13px;font-family:'Inter',sans-serif;}
+  #ask-input:focus{outline:none;border-color:var(--ink);}
+  #ask-btn{padding:11px 15px;flex:0 0 auto;}
+  #ask-btn:disabled{opacity:.65;cursor:wait;}
+  @media(max-width:480px){
+    .chat-launcher{right:16px;bottom:16px;width:56px;height:56px;}
+    .chat-panel{right:10px;bottom:82px;width:calc(100vw - 20px);height:calc(100vh - 105px);min-height:320px;}
+  }
+
+  /* ---- Admission Reporting Email modal ---- */
+  .send-email-btn{font-family:'Inter',sans-serif;white-space:nowrap;}
+  .send-email-btn.sent{
+    background:#E7F5EC;
+    color:#1E7A46;
+    border:1.5px solid #BEE6CC;
+  }
+  .send-email-btn.sent:hover{opacity:.85;}
+  .am-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(20,23,31,0.55);
+    z-index:100;
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+  }
+  .am-overlay.open{display:flex;}
+  .am-modal{
+    background:var(--card);
+    border-radius:14px;
+    padding:26px;
+    max-width:480px;
+    width:100%;
+    max-height:90vh;
+    overflow-y:auto;
+    box-shadow:0 20px 45px rgba(20,23,31,0.18);
+  }
+  .am-title{
+    font-family:'Fraunces',serif;
+    font-size:19px;
+    margin:0 0 4px;
+    color:var(--ink-deep);
+  }
+  .am-subtitle{color:var(--muted);font-size:12.5px;margin:0 0 18px;word-break:break-word;}
+  .am-grid{display:grid;gap:12px;}
+  .am-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .am-row .am-field{flex:1;min-width:140px;}
+  .am-field label{font-size:12px;font-weight:600;display:block;margin-bottom:4px;color:var(--charcoal);}
+  .am-field input, .am-field textarea{
+    width:100%;
+    padding:9px 12px;
+    border-radius:8px;
+    border:1.5px solid var(--border);
+    font-size:13.5px;
+    font-family:'Inter',sans-serif;
+  }
+  .am-field input:focus, .am-field textarea:focus{outline:none;border-color:var(--ink);}
+  .am-field textarea{resize:vertical;}
+  .am-feedback{margin-top:12px;font-size:13px;min-height:18px;font-weight:600;}
+  .am-feedback.ok{color:var(--warm);}
+  .am-feedback.err{color:var(--hot);}
+  .am-feedback.pending{color:var(--muted);}
+  .am-actions{display:flex;gap:10px;margin-top:16px;}
+  .am-actions .btn{flex:1;}
+  .am-cancel{background:var(--muted) !important;}
+
+  @media (max-width:480px){
+    .am-modal{padding:18px;}
+    .am-row{flex-direction:column;}
   }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>AGC Admission Assistant — Leads Dashboard</h1>
-  <p>Students who chatted with the admission bot and left their contact details</p>
+  <div class="title-row">
+    <h1>AGC Admission — Command Dashboard</h1>
+    <span class="badge">Internal Use Only</span>
+  </div>
+  <p>Leads, applications, and AGC NEST registrations captured by AdmitAgent</p>
 </header>
 
 <main>
   <div id="gate">
+    <div class="icon">🔒</div>
     <h2>Admin Access</h2>
-    <p>Enter the admin key to view leads</p>
+    <p>Enter the admin key to view student data</p>
     <input id="admin-key-input" type="password" placeholder="Admin key">
-    <button id="unlock-btn">Unlock</button>
+    <button id="unlock-btn">Unlock Dashboard</button>
     <div id="gate-error"></div>
   </div>
 
   <div id="dashboard">
+    <div class="stats-row" id="stats-row"></div>
+
+    <!-- The agent now opens from the floating chat button in the page corner. -->
+
     <div class="toolbar">
-      <div class="count"><strong id="lead-count">0</strong> leads captured</div>
-      <button id="refresh-btn">Refresh</button>
+      <div class="tabs" id="tabs"></div>
+      <div class="right-tools">
+        <input id="search-input" type="text" placeholder="Search name or email...">
+        <button id="refresh-btn" class="btn">Refresh</button>
+      </div>
     </div>
-    <div id="table-wrap"></div>
+
+    <div class="table-wrap">
+      <div id="table-container"></div>
+    </div>
   </div>
 </main>
 
-<script>
-  // Point this at your running backend
-  const API_BASE = "http://localhost:8000";
+<button id="chat-launcher" class="chat-launcher" type="button" aria-label="Open Admission Agent chat" title="Ask the Admission Agent">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3h.5a8.5 8.5 0 0 1 8 8v.5Z"/>
+    <path d="M8 10h8M8 14h5"/>
+  </svg>
+  <span class="chat-dot"></span>
+</button>
 
+<section id="chat-panel" class="chat-panel" role="dialog" aria-label="Admission Agent chat" aria-hidden="true">
+  <div class="chat-header">
+    <div class="chat-heading">
+      <div class="chat-avatar" aria-hidden="true">✦</div>
+      <div><strong>Admission Agent</strong><small>AGC Admin Assistant · Read-only</small></div>
+    </div>
+    <button id="chat-close" class="chat-close" type="button" aria-label="Close chat">×</button>
+  </div>
+  <div id="chat-body" class="chat-body">
+    <div class="chat-welcome">Hi! Ask me about leads, applications, counsellor workload, or recent registrations.</div>
+    <div id="ask-chips" class="chat-chips"></div>
+    <div id="ask-result"></div>
+  </div>
+  <div class="chat-compose">
+    <div class="chat-input-row">
+      <input id="ask-input" type="text" maxlength="300" placeholder="Ask about leads or registrations..." aria-label="Your question">
+      <button id="ask-btn" class="btn" type="button">Ask</button>
+    </div>
+  </div>
+</section>
+
+<div id="admission-modal-overlay" class="am-overlay">
+  <div class="am-modal">
+    <h2 class="am-title">Admission Reporting Email</h2>
+    <p class="am-subtitle" id="am-student-line"></p>
+
+    <form id="admission-form">
+      <div class="am-grid">
+        <div class="am-field">
+          <label>Admission Counsellor Name</label>
+          <input required id="am-counsellor-name" type="text">
+        </div>
+        <div class="am-field">
+          <label>Counsellor Mobile</label>
+          <input required id="am-counsellor-mobile" type="tel" pattern="\d{10}" maxlength="10" placeholder="10-digit mobile">
+        </div>
+        <div class="am-field">
+          <label>Counsellor Email</label>
+          <input required id="am-counsellor-email" type="email">
+        </div>
+        <div class="am-row">
+          <div class="am-field">
+            <label>Reporting Date</label>
+            <input required id="am-reporting-date" type="date">
+          </div>
+          <div class="am-field">
+            <label>Reporting Time</label>
+            <input required id="am-reporting-time" type="time">
+          </div>
+        </div>
+        <div class="am-field">
+          <label>Admission Process</label>
+          <textarea required id="am-admission-process" rows="3" placeholder="e.g. Verify documents at the admission cell, pay first semester fee, get roll number allotted..."></textarea>
+        </div>
+        <div class="am-field">
+          <label>Documents Required</label>
+          <textarea required id="am-documents" rows="3" placeholder="e.g. 10th & 12th marksheets, transfer certificate, category certificate, passport photos..."></textarea>
+        </div>
+      </div>
+
+      <div id="am-feedback" class="am-feedback"></div>
+
+      <div class="am-actions">
+        <button type="button" id="am-cancel-btn" class="btn am-cancel">Cancel</button>
+        <button type="submit" id="am-submit-btn" class="btn">Send Email</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const API_BASE = "http://localhost:8000";
   let adminKey = "";
+  let activeTab = "leads";
+  let data = { leads: [], applications: [], registrations: [], admissionEmails: [], assignments: [] };
 
   const gate = document.getElementById('gate');
   const dashboard = document.getElementById('dashboard');
@@ -172,85 +535,412 @@
   const keyInput = document.getElementById('admin-key-input');
   const unlockBtn = document.getElementById('unlock-btn');
   const refreshBtn = document.getElementById('refresh-btn');
-  const tableWrap = document.getElementById('table-wrap');
-  const leadCount = document.getElementById('lead-count');
-
-  async function fetchLeads() {
-    try {
-      const res = await fetch(`${API_BASE}/admin/leads`, {
-        headers: { 'x-admin-key': adminKey }
-      });
-      if (res.status === 401) {
-        gateError.textContent = "Invalid admin key.";
-        return null;
-      }
-      if (!res.ok) throw new Error('Server error');
-      const data = await res.json();
-      return data.leads;
-    } catch (err) {
-      gateError.textContent = "Couldn't reach the backend. Is it running?";
-      return null;
-    }
-  }
-
-  function renderLeads(leads) {
-    leadCount.textContent = leads.length;
-    if (leads.length === 0) {
-      tableWrap.innerHTML = '<div id="empty-state">No leads yet — once a student completes the chatbot intro, they\'ll show up here.</div>';
-      return;
-    }
-    const rows = leads.map(lead => `
-      <tr>
-        <td class="name">${escapeHtml(lead.name || '-')}</td>
-        <td class="mobile"><a href="tel:${lead.mobile}">${escapeHtml(lead.mobile || '-')}</a></td>
-        <td class="email"><a href="mailto:${lead.email}">${escapeHtml(lead.email || '-')}</a></td>
-        <td class="time">${formatDate(lead.created_at)}</td>
-      </tr>
-    `).join('');
-
-    tableWrap.innerHTML = `
-      <table>
-        <thead>
-          <tr><th>Name</th><th>Mobile</th><th>Email</th><th>Captured At</th></tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      </table>
-    `;
-  }
+  const searchInput = document.getElementById('search-input');
+  const tabsEl = document.getElementById('tabs');
+  const tableContainer = document.getElementById('table-container');
+  const statsRow = document.getElementById('stats-row');
 
   function escapeHtml(str) {
     const div = document.createElement('div');
-    div.textContent = str;
+    div.textContent = str == null ? '' : str;
     return div.innerHTML;
   }
 
   function formatDate(iso) {
     if (!iso) return '-';
-    const d = new Date(iso);
-    return d.toLocaleString();
+    return new Date(iso).toLocaleString('en-IN', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+  }
+
+  async function fetchJSON(path) {
+    const res = await fetch(`${API_BASE}${path}`, { headers: { 'x-admin-key': adminKey } });
+    if (res.status === 401) throw new Error('unauthorized');
+    if (!res.ok) throw new Error('server error');
+    return res.json();
+  }
+
+  async function loadAll() {
+    const [leadsRes, appsRes, nestRes, emailsRes, assignRes] = await Promise.all([
+      fetchJSON('/admin/leads'),
+      fetchJSON('/admin/applications'),
+      fetchJSON('/admin/nest-registrations'),
+      fetchJSON('/admin/admission-emails'),
+      fetchJSON('/admin/assignments').catch(() => ({ assignments: [] })),
+    ]);
+    data.leads = leadsRes.leads || [];
+    data.applications = appsRes.applications || [];
+    data.registrations = nestRes.registrations || [];
+    data.admissionEmails = emailsRes.admission_emails || [];
+    data.assignments = assignRes.assignments || [];
+  }
+
+  function leadBadge(label, score) {
+    if (!label) return '<span class="lead-badge cold"><span class="dot"></span>Unscored</span>';
+    const cls = label.toLowerCase();
+    return `<span class="lead-badge ${cls}"><span class="dot"></span>${escapeHtml(label)}</span>`;
+  }
+
+  function scoreBar(score) {
+    if (score == null) return '-';
+    const pct = Math.min(100, Math.max(0, score));
+    let color = 'var(--cold)';
+    if (pct >= 70) color = 'var(--hot)';
+    else if (pct >= 45) color = 'var(--warm)';
+    return `<div class="score-bar-wrap">
+      <div class="score-bar"><div class="score-bar-fill" style="width:${pct}%;background:${color};"></div></div>
+      <span class="score-num">${pct.toFixed(0)}</span>
+    </div>`;
+  }
+
+  function renderStats() {
+    const hotCount = data.registrations.filter(r => r.lead_label === 'Hot').length;
+    const stats = [
+      { label: 'Total Leads', num: data.leads.length },
+      { label: 'Applications', num: data.applications.length },
+      { label: 'NEST Registrations', num: data.registrations.length },
+      { label: 'Hot Leads', num: hotCount, hot: true },
+    ];
+    statsRow.innerHTML = stats.map(s => `
+      <div class="stat-card ${s.hot ? 'hot' : ''}">
+        <div class="num">${s.num}</div>
+        <div class="label">${s.label}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderTabs() {
+    const tabs = [
+      { key: 'leads', label: 'Leads', count: data.leads.length },
+      { key: 'applications', label: 'Applications', count: data.applications.length },
+      { key: 'registrations', label: 'NEST Registrations', count: data.registrations.length },
+    ];
+    tabsEl.innerHTML = tabs.map(t => `
+      <button class="tab-btn ${activeTab === t.key ? 'active' : ''}" data-tab="${t.key}">
+        ${t.label} <span class="count">${t.count}</span>
+      </button>
+    `).join('');
+    tabsEl.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => { activeTab = btn.dataset.tab; renderTabs(); renderTable(); });
+    });
+  }
+
+  function matchesSearch(row, query) {
+    if (!query) return true;
+    const haystack = `${row.name || ''} ${row.email || ''}`.toLowerCase();
+    return haystack.includes(query.toLowerCase());
+  }
+
+  function renderTable() {
+    const query = searchInput.value.trim();
+
+    if (activeTab === 'leads') {
+      const rows = data.leads.filter(r => matchesSearch(r, query));
+      renderGenericTable(rows, [
+        { key: 'name', label: 'Name', cls: 'name' },
+        { key: 'mobile', label: 'Mobile', render: r => `<a href="tel:${r.mobile}">${escapeHtml(r.mobile)}</a>` },
+        { key: 'email', label: 'Email', render: r => `<a href="mailto:${r.email}">${escapeHtml(r.email)}</a>` },
+        { key: 'created_at', label: 'Captured', cls: 'time', render: r => formatDate(r.created_at) },
+      ], 'No leads yet — once a student completes the chatbot intro, they\'ll show up here.');
+    }
+
+    if (activeTab === 'applications') {
+      const rows = data.applications.filter(r => matchesSearch(r, query));
+      renderGenericTable(rows, [
+        { key: 'name', label: 'Name', cls: 'name' },
+        { key: 'program', label: 'Program' },
+        { key: 'mobile', label: 'Mobile', render: r => `<a href="tel:${r.mobile}">${escapeHtml(r.mobile)}</a>` },
+        { key: 'email', label: 'Email', render: r => r.email ? `<a href="mailto:${r.email}">${escapeHtml(r.email)}</a>` : '-' },
+        { key: 'category', label: 'Category' },
+        { key: 'meeting_time', label: 'Scheduled Call', render: r => r.meeting_time ? `📅 ${escapeHtml(r.meeting_time)}` : '-' },
+        { key: 'created_at', label: 'Submitted', cls: 'time', render: r => formatDate(r.created_at) },
+      ], 'No applications yet — submissions from the Admission Enquiry Form will appear here.');
+    }
+
+    if (activeTab === 'registrations') {
+      const rows = data.registrations.filter(r => matchesSearch(r, query))
+        .sort((a, b) => (b.lead_score || 0) - (a.lead_score || 0));
+      renderGenericTable(rows, [
+        { key: 'lead_label', label: 'Lead', render: r => leadBadge(r.lead_label, r.lead_score) },
+        { key: 'lead_score', label: 'Confidence', render: r => scoreBar(r.lead_score) },
+        { key: 'name', label: 'Name', cls: 'name' },
+        { key: 'course', label: 'Course' },
+        { key: 'percentage', label: '12th %', render: r => r.percentage != null ? `${r.percentage}%` : '-' },
+        { key: 'mobile', label: 'Mobile', render: r => `<a href="tel:${r.mobile}">${escapeHtml(r.mobile)}</a>` },
+        { key: 'email', label: 'Email', render: r => `<a href="mailto:${r.email}">${escapeHtml(r.email)}</a>` },
+        { key: 'username', label: 'Username', cls: 'mono' },
+        { key: 'created_at', label: 'Registered', cls: 'time', render: r => formatDate(r.created_at) },
+        { key: 'counsellor', label: 'Counsellor', render: r => {
+            const a = assignmentFor(r.username);
+            return a ? `<b>${escapeHtml(a.counsellor_name)}</b><div style="font-size:11px;color:var(--muted);">${escapeHtml(a.status || 'New')}</div>` : '-';
+          }
+        },
+        { key: 'action', label: 'Reporting Email', render: r => {
+            const last = data.admissionEmails.find(e => e.username === r.username);
+            if (last) {
+              const prettyDate = new Date(last.reporting_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+              return `<button class="btn send-email-btn sent" style="padding:6px 12px;font-size:12px;"
+                        data-username="${escapeHtml(r.username)}" data-name="${escapeHtml(r.name)}"
+                        data-email="${escapeHtml(r.email)}" data-course="${escapeHtml(r.course)}">
+                        ✓ Email Sent
+                      </button>
+                      <div style="font-size:11px;color:var(--muted);margin-top:4px;white-space:normal;">${escapeHtml(prettyDate)}, ${escapeHtml(last.reporting_time)} — click to resend</div>`;
+            }
+            return `<button class="btn send-email-btn" style="padding:6px 12px;font-size:12px;"
+                      data-username="${escapeHtml(r.username)}" data-name="${escapeHtml(r.name)}"
+                      data-email="${escapeHtml(r.email)}" data-course="${escapeHtml(r.course)}">
+                      Send Email
+                    </button>`;
+          }
+        },
+      ], 'No AGC NEST registrations yet — students who register via the chatbot will show up here.');
+
+      tableContainer.querySelectorAll('.send-email-btn').forEach(btn => {
+        btn.addEventListener('click', () => openAdmissionModal(btn.dataset));
+      });
+    }
+  }
+
+  function renderGenericTable(rows, columns, emptyMsg) {
+    if (rows.length === 0) {
+      tableContainer.innerHTML = `<div id="empty-state"><div class="big">—</div>${escapeHtml(emptyMsg)}</div>`;
+      return;
+    }
+    const headerHtml = columns.map(c => `<th>${c.label}</th>`).join('');
+    const rowsHtml = rows.map(r => {
+      const cells = columns.map(c => {
+        const content = c.render ? c.render(r) : escapeHtml(r[c.key]);
+        return `<td class="${c.cls || ''}">${content}</td>`;
+      }).join('');
+      return `<tr>${cells}</tr>`;
+    }).join('');
+    tableContainer.innerHTML = `<table><thead><tr>${headerHtml}</tr></thead><tbody>${rowsHtml}</tbody></table>`;
   }
 
   async function unlock() {
     adminKey = keyInput.value.trim();
     gateError.textContent = "";
-    if (!adminKey) {
-      gateError.textContent = "Please enter the admin key.";
-      return;
-    }
-    const leads = await fetchLeads();
-    if (leads !== null) {
+    if (!adminKey) { gateError.textContent = "Please enter the admin key."; return; }
+    unlockBtn.textContent = "Checking...";
+    try {
+      await loadAll();
       gate.style.display = 'none';
       dashboard.style.display = 'block';
-      renderLeads(leads);
+      chatLauncher.style.display = 'flex';
+      renderStats();
+      renderTabs();
+      renderTable();
+    } catch (err) {
+      gateError.textContent = err.message === 'unauthorized'
+        ? "Invalid admin key."
+        : "Couldn't reach the backend. Is it running?";
+    } finally {
+      unlockBtn.textContent = "Unlock Dashboard";
     }
   }
 
   unlockBtn.addEventListener('click', unlock);
-  keyInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') unlock(); });
+  keyInput.addEventListener('keydown', e => { if (e.key === 'Enter') unlock(); });
 
   refreshBtn.addEventListener('click', async () => {
-    const leads = await fetchLeads();
-    if (leads !== null) renderLeads(leads);
+    refreshBtn.textContent = "Refreshing...";
+    try {
+      await loadAll();
+      renderStats();
+      renderTabs();
+      renderTable();
+    } catch (err) {
+      alert("Couldn't refresh: " + err.message);
+    } finally {
+      refreshBtn.textContent = "Refresh";
+    }
+  });
+
+  searchInput.addEventListener('input', renderTable);
+
+  // ---- Ask the Admission Agent (natural-language admin queries) ----
+  const askInput = document.getElementById('ask-input');
+  const askBtn = document.getElementById('ask-btn');
+  const askResult = document.getElementById('ask-result');
+  const chatLauncher = document.getElementById('chat-launcher');
+  const chatPanel = document.getElementById('chat-panel');
+  const chatClose = document.getElementById('chat-close');
+  const chatBody = document.getElementById('chat-body');
+
+  function openAgentChat() {
+    chatPanel.classList.add('open');
+    chatPanel.setAttribute('aria-hidden', 'false');
+    askInput.focus();
+  }
+  function closeAgentChat() {
+    chatPanel.classList.remove('open');
+    chatPanel.setAttribute('aria-hidden', 'true');
+  }
+  chatLauncher.addEventListener('click', () => {
+    if (chatPanel.classList.contains('open')) closeAgentChat();
+    else openAgentChat();
+  });
+  chatClose.addEventListener('click', closeAgentChat);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeAgentChat();
+  });
+
+  [
+    'Hot leads from this week that have not been contacted yet',
+    'Workload per counsellor',
+    'Summary of the last 30 days',
+    'Warm leads from AGC NEST this month',
+    'BCA students not contacted'
+  ].forEach(q => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = q;
+    b.addEventListener('click', () => { askInput.value = q; runAsk(); });
+    document.getElementById('ask-chips').appendChild(b);
+  });
+
+  async function runAsk() {
+    const question = askInput.value.trim();
+    if (!question) return;
+    const userMessage = document.createElement('div');
+    userMessage.className = 'chat-message user';
+    userMessage.textContent = question;
+    askResult.appendChild(userMessage);
+    askInput.value = '';
+    const pending = document.createElement('div');
+    pending.className = 'chat-message bot';
+    pending.textContent = 'Thinking...';
+    askResult.appendChild(pending);
+    chatBody.scrollTop = chatBody.scrollHeight;
+    askBtn.disabled = true; askBtn.textContent = '...';
+    try {
+      const res = await fetch(`${API_BASE}/admin/ask`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
+        body: JSON.stringify({ question }),
+      });
+      if (!res.ok) throw new Error(res.status === 401 ? 'Invalid admin key' : 'Server error');
+      const out = await res.json();
+      const first = String(out.answer || '').split('\n')[0];
+      let resultHtml = `<div>${escapeHtml(out.rows && out.rows.length ? first : out.answer)}</div>`;
+      if (out.rows && out.rows.length) {
+        resultHtml += `<div class="chat-table-wrap"><table><thead><tr><th>Student</th><th>Course</th><th>Lead</th><th>Status</th><th>Counsellor</th><th>Mobile</th><th>Assigned</th></tr></thead><tbody>` +
+          out.rows.map(r => `<tr><td><b>${escapeHtml(r.student_name)}</b></td><td>${escapeHtml(r.course)}</td>` +
+            `<td>${escapeHtml(r.lead_label)}</td><td>${escapeHtml(r.status)}</td><td>${escapeHtml(r.counsellor_name)}</td>` +
+            `<td><a href="tel:${escapeHtml(r.student_mobile)}">${escapeHtml(r.student_mobile)}</a></td><td>${formatDate(r.created_at)}</td></tr>`).join('') +
+          `</tbody></table></div>`;
+      }
+      resultHtml += `<div class="ask-meta">Tool used: ${escapeHtml(out.tool || 'N/A')} · Routed by ${escapeHtml(out.routed_by || 'agent')} · Read-only</div>`;
+      pending.innerHTML = resultHtml;
+    } catch (err) {
+      pending.innerHTML = `<span style="color:var(--hot)">Could not get an answer: ${escapeHtml(err.message)}</span>`;
+    } finally {
+      askBtn.disabled = false; askBtn.textContent = 'Ask';
+      chatBody.scrollTop = chatBody.scrollHeight;
+      askInput.focus();
+    }
+  }
+  askBtn.addEventListener('click', runAsk);
+  askInput.addEventListener('keydown', e => { if (e.key === 'Enter') runAsk(); });
+
+  // ---- Admission Reporting Email modal ----
+  let admissionModalCtx = {};
+  const amOverlay = document.getElementById('admission-modal-overlay');
+  const amForm = document.getElementById('admission-form');
+  const amFeedback = document.getElementById('am-feedback');
+  const amSubmitBtn = document.getElementById('am-submit-btn');
+
+  function assignmentFor(username) {
+    return data.assignments.find(a => a.source === 'nest' && a.reference === username);
+  }
+
+  function openAdmissionModal(ctx) {
+    admissionModalCtx = ctx;
+    document.getElementById('am-student-line').textContent = `${ctx.name} — ${ctx.course} (${ctx.email})`;
+    amFeedback.textContent = '';
+    amFeedback.className = 'am-feedback';
+    amForm.reset();
+
+    // Convenience only: prefill counsellor/process fields from the most recently
+    // sent email (any student), so admin doesn't retype the same details every time.
+    const nameEl = document.getElementById('am-counsellor-name');
+    const mobEl = document.getElementById('am-counsellor-mobile');
+    const mailEl = document.getElementById('am-counsellor-email');
+    const assigned = assignmentFor(ctx.username);
+    [nameEl, mobEl, mailEl].forEach(el => { el.readOnly = false; el.style.background = ''; });
+
+    if (assigned) {
+      // Counsellor was auto-allocated - admin only needs to pick the date/time.
+      nameEl.value = assigned.counsellor_name || '';
+      mobEl.value = assigned.counsellor_mobile || '';
+      mailEl.value = assigned.counsellor_email || '';
+      [nameEl, mobEl, mailEl].forEach(el => { el.readOnly = true; el.style.background = '#F4F3EC'; });
+    }
+
+    const lastCounsellor = data.admissionEmails[0];
+    if (lastCounsellor) {
+      if (!assigned) {
+        nameEl.value = lastCounsellor.counsellor_name || '';
+        mobEl.value = lastCounsellor.counsellor_mobile || '';
+        mailEl.value = lastCounsellor.counsellor_email || '';
+      }
+      document.getElementById('am-admission-process').value = lastCounsellor.admission_process || '';
+      document.getElementById('am-documents').value = lastCounsellor.documents_required || '';
+    }
+
+    amOverlay.classList.add('open');
+  }
+
+  function closeAdmissionModal() {
+    amOverlay.classList.remove('open');
+  }
+
+  document.getElementById('am-cancel-btn').addEventListener('click', closeAdmissionModal);
+  amOverlay.addEventListener('click', (e) => { if (e.target === amOverlay) closeAdmissionModal(); });
+
+  amForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    amSubmitBtn.disabled = true;
+    amSubmitBtn.textContent = "Sending...";
+    amFeedback.className = 'am-feedback pending';
+    amFeedback.textContent = 'Sending email...';
+
+    const payload = {
+      username: admissionModalCtx.username || '',
+      email: admissionModalCtx.email,
+      name: admissionModalCtx.name,
+      course: admissionModalCtx.course,
+      counsellor_name: document.getElementById('am-counsellor-name').value.trim(),
+      counsellor_mobile: document.getElementById('am-counsellor-mobile').value.trim(),
+      counsellor_email: document.getElementById('am-counsellor-email').value.trim(),
+      reporting_date: document.getElementById('am-reporting-date').value,
+      reporting_time: document.getElementById('am-reporting-time').value,
+      admission_process: document.getElementById('am-admission-process').value.trim(),
+      documents_required: document.getElementById('am-documents').value.trim(),
+    };
+
+    try {
+      const res = await fetch(`${API_BASE}/admin/send-admission-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
+        body: JSON.stringify(payload),
+      });
+      const result = await res.json();
+      if (res.ok && result.success) {
+        amFeedback.className = 'am-feedback ok';
+        amFeedback.textContent = `✓ Email Sent — Reporting: ${payload.reporting_date}, ${payload.reporting_time}`;
+        await loadAll();
+        renderTable();
+        setTimeout(closeAdmissionModal, 1200);
+      } else {
+        amFeedback.className = 'am-feedback err';
+        amFeedback.textContent = `✕ Failed — Retry (${result.message || 'server error'})`;
+      }
+    } catch (err) {
+      amFeedback.className = 'am-feedback err';
+      amFeedback.textContent = `✕ Failed — Retry (${err.message})`;
+    } finally {
+      amSubmitBtn.disabled = false;
+      amSubmitBtn.textContent = "Send Email";
+    }
   });
 </script>
 

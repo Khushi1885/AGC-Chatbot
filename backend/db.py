@@ -16,6 +16,23 @@ Setup required before this works:
      created_at timestamptz default now()
    );
 
+   -- Also needed for the "Send Admission Reporting Email" admin feature:
+   create table admission_reporting_emails (
+     id bigint generated always as identity primary key,
+     username text,
+     student_name text,
+     student_email text,
+     course text,
+     counsellor_name text,
+     counsellor_mobile text,
+     counsellor_email text,
+     reporting_date date,
+     reporting_time text,
+     admission_process text,
+     documents_required text,
+     sent_at timestamptz default now()
+   );
+
 3. Get your Project URL and anon/service key from Project Settings > API
 4. Put them in a .env file in the project root:
 
@@ -156,6 +173,41 @@ def get_all_nest_registrations():
         supabase.table("agc_nest_registrations")
         .select("*")
         .order("created_at", desc=True)
+        .execute()
+    )
+    return result.data
+
+
+def save_admission_reporting_email(username: str, student_name: str, student_email: str, course: str,
+                                    counsellor_name: str, counsellor_mobile: str, counsellor_email: str,
+                                    reporting_date: str, reporting_time: str,
+                                    admission_process: str, documents_required: str):
+    """
+    Stores a record every time admin sends an admission-reporting email from the
+    dashboard, so the "Email Sent" status/date survives a page refresh.
+    Requires the 'admission_reporting_emails' table - see setup instructions
+    at the top of this file.
+    """
+    supabase.table("admission_reporting_emails").insert({
+        "username": username,
+        "student_name": student_name,
+        "student_email": student_email,
+        "course": course,
+        "counsellor_name": counsellor_name,
+        "counsellor_mobile": counsellor_mobile,
+        "counsellor_email": counsellor_email,
+        "reporting_date": reporting_date,
+        "reporting_time": reporting_time,
+        "admission_process": admission_process,
+        "documents_required": documents_required,
+    }).execute()
+
+
+def get_all_admission_reporting_emails():
+    result = (
+        supabase.table("admission_reporting_emails")
+        .select("*")
+        .order("sent_at", desc=True)
         .execute()
     )
     return result.data

@@ -41,56 +41,36 @@ MODEL_NAME = "qwen3:1.7b"
 # admitting failure, which is far worse than a scripted fallback message.
 CRITICAL_ACCURACY_TOOLS = {"get_semester_fee_structure", "get_program_summary"}
 
-# Backup guardrail: small models sometimes ignore system prompt scope instructions.
-# Instead of trying to list every possible off-topic question (impossible), we
-# check if the message contains ANY admission-related keyword. If it doesn't,
-# we treat it as off-topic and refuse without even calling the model.
-ADMISSION_KEYWORDS = [
-    "course", "program", "degree", "btech", "b.tech", "mtech", "m.tech", "mba",
-    "mca", "bca", "bba", "llb", "pharmacy", "diploma", "semester",
-    "fee", "fees", "scholarship", "cost", "charge",
-    "admission", "apply", "application", "eligib", "criteria", "cutoff",
-    "counsel", "counselling", "seat", "quota", "merit", "rank",
-    "hostel", "campus", "facilit", "canteen", "library",
-    "placement", "package", "recruiter", "job",
-    "date", "deadline", "schedule", "exam",
-    "document", "certificate",
-    "contact", "officer", "escalat", "call", "email", "phone", "number",
-    "rag", "grievance", "harassment", "complain",
-    "college", "agc", "institute", "university",
-    "hi", "hello", "hey", "thanks", "thank you", "bye",
-    "yes", "no", "ok", "okay", "sure", "please", "yeah", "yep", "nope",
-    "yup", "alright", "fine", "correct", "right",
+# Backup guardrail: instead of requiring an English admission-keyword match
+# (which broke Hindi/Hinglish/casual messages), we now only block a small set
+# of CLEARLY off-topic request patterns. Everything else - any language,
+# greetings, casual phrasing - goes to the model, which is instructed below
+# to stay on topic and reply in whatever language the student used.
+OFF_TOPIC_BLOCK_PATTERNS = [
+    "write code", "write a program", "write a python", "python code",
+    "javascript code", "java code", "html code", "write a script",
+    "write me a function", "debug this code",
+    "capital of", "national animal", "national bird", "national flower",
+    "who is the prime minister", "who is the president of india",
+    "write a poem", "write a story", "write a joke", "tell me a joke",
+    "solve this equation", "what is the meaning of life",
 ]
-
-
-def _mentions_known_course(message: str) -> bool:
-    """Fallback: checks if the message mentions any word from a real course
-    name (e.g. 'radiology', 'nutrition'), catching course-related messages
-    that don't contain any of the fixed ADMISSION_KEYWORDS."""
-    try:
-        from tools import get_all_courses_list
-        courses = get_all_courses_list().get("courses", [])
-    except Exception:
-        return False
-    lower = message.lower()
-    for c in courses:
-        name = c.get("course", "").lower()
-        tokens = [t for t in name.replace(".", " ").replace("-", " ").replace("&", " ").split() if len(t) > 3]
-        if any(tok in lower for tok in tokens):
-            return True
-    return False
 
 
 def _is_admission_related(message: str) -> bool:
     lower = message.lower()
-    if any(keyword in lower for keyword in ADMISSION_KEYWORDS):
-        return True
-    return _mentions_known_course(message)
+    return not any(pattern in lower for pattern in OFF_TOPIC_BLOCK_PATTERNS)
 
 SYSTEM_PROMPT = """You are the admission cell assistant for Amritsar Group of Colleges (AGC).
 Answer student questions about courses, fees, eligibility, admission process, counselling
 schedules, hostel, placements, scholarships, and grievance/ragging support.
+
+Language:
+- Always reply in the SAME language the student used - English, Hindi (Devanagari),
+  Hinglish, Punjabi, or any other language. Match their language and tone naturally,
+  the way a helpful human counselor would, even for simple greetings like "hi",
+  "hello", "namaste", or "bye".
+- Understand casual, natural phrasing - students won't always use exact keywords.
 
 Scope:
 - ONLY answer questions related to AGC admissions and campus life (using the topics above).

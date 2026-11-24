@@ -64,7 +64,22 @@ def _send_email(to_email: str, subject: str, html_body: str) -> bool:
         return False
 
 
-def send_application_confirmation(to_email: str, name: str, program: str, meeting_time: str = None) -> bool:
+def _counsellor_block(counsellor: dict) -> str:
+    """HTML block with the auto-allocated admission counsellor's details (empty if none)."""
+    if not counsellor:
+        return ""
+    return f"""
+      <p style="background:#f4f3ec; padding:12px; border-radius:6px;">
+        <b>Your Admission Counsellor</b><br/>
+        {counsellor.get('name', '')}<br/>
+        Mobile: {counsellor.get('mobile', '')}<br/>
+        Email: {counsellor.get('email', '')}
+      </p>
+    """
+
+
+def send_application_confirmation(to_email: str, name: str, program: str, meeting_time: str = None,
+                                  counsellor: dict = None) -> bool:
     """Sends a confirmation email after a student submits the admission enquiry form."""
     meeting_html = ""
     if meeting_time:
@@ -81,6 +96,7 @@ def send_application_confirmation(to_email: str, name: str, program: str, meetin
       <p>Thank you for submitting your admission enquiry for <b>{program}</b> at
       Amritsar Group of Colleges (AGC).</p>
       {meeting_html}
+      {_counsellor_block(counsellor)}
       <p>Our admission counselors will contact you at this time on the
       mobile number you provided.</p>
       <p>If you have any questions in the meantime, feel free to chat with
@@ -91,7 +107,8 @@ def send_application_confirmation(to_email: str, name: str, program: str, meetin
     return _send_email(to_email, f"AGC Admission - We've received your enquiry for {program}", html_body)
 
 
-def send_nest_credentials(to_email: str, name: str, username: str, password: str, test_url: str = None) -> bool:
+def send_nest_credentials(to_email: str, name: str, username: str, password: str, test_url: str = None,
+                          counsellor: dict = None) -> bool:
     """Sends AGC NEST scholarship test login credentials after chatbot registration."""
     link_html = ""
     if test_url:
@@ -117,8 +134,71 @@ def send_nest_credentials(to_email: str, name: str, username: str, password: str
         <b>Password:</b> {password}
       </p>
       {link_html}
+      {_counsellor_block(counsellor)}
       <p>Please keep these details safe. Good luck!</p>
       <p style="margin-top: 24px;">Best regards,<br/>AGC Admission Cell</p>
     </div>
     """
     return _send_email(to_email, "AGC NEST - Your Scholarship Test Login Details", html_body)
+
+
+def send_admission_reporting_email(to_email: str, name: str, course: str,
+                                    counsellor_name: str, counsellor_mobile: str, counsellor_email: str,
+                                    reporting_date: str, reporting_time: str,
+                                    admission_process: str, documents_required: str) -> bool:
+    """
+    Sends the "report to college on this date/time" email, sent manually by
+    admin from the dashboard's NEST Registrations tab (Send Email button).
+    Reuses the same Resend-based _send_email() as every other email in this
+    file - no separate email mechanism.
+    """
+    # Preserve manual line breaks the admin typed in the process/documents fields
+    process_html = admission_process.replace("\n", "<br/>")
+    documents_html = documents_required.replace("\n", "<br/>")
+
+    html_body = f"""
+    <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto;">
+      <h2 style="color: #7A1B35;">AGC Admission — Reporting Details</h2>
+      <p>Dear {name},</p>
+      <p>Congratulations! Please find your admission reporting details for
+      <b>{course}</b> at Amritsar Group of Colleges (AGC) below.</p>
+
+      <p style="background:#f4f3ec; padding:12px; border-radius:6px;">
+        📅 <b>Reporting Date:</b> {reporting_date}<br/>
+        🕐 <b>Reporting Time:</b> {reporting_time}
+      </p>
+
+      <p><b>Your Admission Counsellor:</b><br/>
+      {counsellor_name}<br/>
+      📞 {counsellor_mobile}<br/>
+      ✉️ {counsellor_email}</p>
+
+      <p><b>Admission Process:</b><br/>{process_html}</p>
+      <p><b>Documents Required:</b><br/>{documents_html}</p>
+
+      <p>Please report to the college campus on the above date and time
+      with all the mentioned documents to complete your admission process.</p>
+
+      <p style="margin-top: 24px;">Best regards,<br/>AGC Admission Department</p>
+    </div>
+    """
+    return _send_email(to_email, f"AGC Admission Reporting Details – {course}", html_body)
+
+
+def send_slot_confirmation(to_email: str, name: str, meeting_time: str, counsellor: dict = None) -> bool:
+    """Sent when a student books or reschedules their counselling slot from the chatbot."""
+    html_body = f"""
+    <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto;">
+      <h2 style="color: #7A1B35;">Counselling Slot Confirmed</h2>
+      <p>Dear {name},</p>
+      <p>Your counselling call with the AGC admission team is scheduled for:</p>
+      <p style="background:#f4f3ec; padding:12px; border-radius:6px;">
+        📅 <b>{meeting_time}</b>
+      </p>
+      {_counsellor_block(counsellor)}
+      <p>Need a different time? Just ask AdmitAgent on our website to reschedule,
+      or call us at <b>+91 8872009950</b>.</p>
+      <p style="margin-top: 24px;">Best regards,<br/>AGC Admission Cell</p>
+    </div>
+    """
+    return _send_email(to_email, "AGC Admission - Your counselling slot is confirmed", html_body)
